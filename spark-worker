@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. /common.sh
+
+if ! getent hosts spark-master; then
+  exit 0
+fi
+
+export SPARK_WORKER_PORT=30002
+/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077 --webui-port 8081 --cores 2 --memory 20G
