@@ -32,7 +32,7 @@ OR
 Open the jupyter notebook following the url in the output.
 
 ### Verify pyspark works
-
+Enter `python3` inside container to start an interactive python session and run the following:  
 ```python
 from pyspark.sql import SparkSession    # import for session creation
 spark = SparkSession.builder.getOrCreate()    # create the session
