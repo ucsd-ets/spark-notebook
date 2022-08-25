@@ -38,6 +38,8 @@ RUN ln -s spark-${SPARK_VERSION}-bin-hadoop3.3 spark && \
 ADD common.sh spark-master spark-worker /
 ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 
+RUN chmod 777 /spark-master /spark-worker /opt/spark/conf/spark-defaults.conf
+
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
 RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark -v
