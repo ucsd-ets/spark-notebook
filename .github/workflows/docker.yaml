@@ -7,7 +7,7 @@ name: Docker
 
 on:
   push:
-    branches: [ "master", "ghcr" ]
+    branches: [ "master", "fa22" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
