@@ -7,15 +7,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: spark-master
+  name: spark-main
   labels:
-    component: spark-master
+    component: spark-main
 spec:
   containers:
-  - name: spark-master
+  - name: spark-main
     image: ghcr.io/ucsd-ets/spark-notebook:latest
-    stdin: true
-    tty: true
+    command: ["/bin/sh","-c"]
+    args: ["./spark-3.3.0-bin-hadoop3/sbin/start-master.sh; sleep inf"]
     ports:
     - containerPort: 7077
     - containerPort: 8080
@@ -29,7 +29,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: spark-master
+  name: spark-main
 spec:
   ports:
     - name: webui
@@ -57,21 +57,21 @@ spec:
       port: 60004
       targetPort: 60004
   selector:
-    component: spark-master
+    component: spark-main
 ---
 ### Definition for spark worker and its service ###
 apiVersion: v1
 kind: Pod
 metadata:
-  name: spark-worker
+  name: spark-dev
   labels:
-    component: spark-worker
+    component: spark-dev
 spec:
   containers:
-  - name: spark-worker
+  - name: spark-dev
     image: ghcr.io/ucsd-ets/spark-notebook:latest
-    stdin: true
-    tty: true
+    command: ["/bin/sh","-c"]
+    args: ["./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-main:7077; sleep inf"]
     ports:
     - containerPort: 8081
     - containerPort: 30002
@@ -84,9 +84,9 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: spark-worker
+  name: spark-dev
   labels:
-    component: spark-worker
+    component: spark-dev
 spec:
   ports:
     - name: webui
@@ -111,4 +111,4 @@ spec:
       port: 60004
       targetPort: 60004
   selector:
-    component: spark-worker
+    component: spark-dev
