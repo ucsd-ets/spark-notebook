@@ -1,12 +1,12 @@
 # spark-notebook
 
-## Development
+## Container and Image Development
 
-### Build the container
+- ### Build the container
 
 `docker build -t ucsdets/spark-notebook:latest .`
 
-### Enter into the container
+- ### Enter into the container
 
 ```
 # command to start the container
@@ -16,7 +16,7 @@
 docker run -p 8888:8888 -ti ucsdets/spark-notebook:latest /bin/bash
 ```
 
-### Verify spark works
+- ### Verify spark works
 
 Checkout this guide https://sparkbyexamples.com/pyspark-tutorial/
 
@@ -26,12 +26,12 @@ OR
 
 `:quit` returns to the container
 
-### Start a jupyter notebook
+- ### Start a jupyter notebook
 
 `jupyter notebook --ip 0.0.0.0 --port 8888 --allow-root` # you have to be inside the container  
 Open the jupyter notebook following the url in the output.
 
-### Verify pyspark works
+- ### Verify pyspark works
 Enter `python3` inside container to start an interactive python session and run the following:  
 ```python
 from pyspark.sql import SparkSession    # import for session creation
@@ -41,35 +41,60 @@ df = spark.createDataFrame(data)
 df.show()
 ```
 
-### k8s development
-
+## k8s development: Set up a Spark Cluster
+- ### Build pods
 ```bash
 # clone this repo into its-dsmlpdev-master2:/home/<username>
 
 sudo -s # login as root
+chown -R <username> # change ownership so you can edit files
 cd k8s-yamls
-kubectl apply -f pods.yaml
+kubectl apply -f pods.yaml # to run yaml file to build pods
 
-# to see if pods are running
-kubectl get pods 
-kubectl get pods | grep spark # to filter for spark pods
-
-# to go into a pod
-kubectl exec -it spark-master /bin/bash
-kubectl exec -it spark-worker /bin/bash
-
-# follow this guide to attempt to setup a spark cluster
-# https://medium.com/codex/setup-a-spark-cluster-step-by-step-in-10-minutes-922c06f8e2b1
-# skip this step SPARK_MASTER_HOST=192.168.0.1
-# master scripts located at /opt/spark-3.3.0-bin-hadoop3/sbin/
-
-find / -name "script_name.sh" # to search entire filesystem for a file
-
-# once you get spark master and spark worker running together, port forward all the way to your localhost and confirm that they're connected in the web UI https://collab.ucsd.edu/display/ETS/Process+%28DRAFT%29%3A+SSH+Tunneling+to+Service+in+k8s+on+dsmlpdev
-
-kubectl port-forward spark-master 8080:8080 # on its-dsmlpdev-master2
-ssh -L 8080:localhost:8080 -N <username>@its-dsmlpdev-master2.ucsd.edu
-
-## to delete the environment
+# TIPS
+# check spark pods, should see 2 "Running"
+kubectl get pods | grep spark 
+# to delete the environment if something is wrong at any time. then re-run yaml file.
 kubectl delete -f pods.yaml
+```
+- ### Get master pod (spark-main) to work
+**UPDATE: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-main section. Skip this if there.**
+```bash
+# go into master pod
+kubectl exec -it spark-main -- /bin/bash
+
+find / -name <FILE_NAME> # TIP: to search entire filesystem for a file
+# Start the node inside pod
+./spark-3.3.0-bin-hadoop3/sbin/start-master.sh 
+```
+
+```bash
+# port forward to your localhost and confirm that they're connected in the web UI 
+# For detailed instruction, please check: https://collab.ucsd.edu/display/ETS/Process+%28DRAFT%29%3A+SSH+Tunneling+to+Service+in+k8s+on+dsmlpdev
+
+# if default 8080 doesn't work, try other port like 7070:8080, 
+# then change to ssh -L 7070:localhost:7070 ......
+kubectl port-forward spark-main 8080:8080 # on its-dsmlpdev-master2
+ssh -L 8080:localhost:8080 -N <username>@its-dsmlpdev-master2.ucsd.edu # on local terminal
+
+# TIPS: 
+# If you messed up the port-forward, kill them all to cleanup
+lsof -i:8080 # list all process listening to a port, confirm they are safe to delete, then
+pkill -f 'port-forward'
+
+
+# open a tab and go to localhost:<PORT>, you should see the Spark page loading
+```
+- ### Get worker pod (spark-dev) to work
+**UPDATE: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-dev section. Skip this if there.**
+```bash
+# open a separate terminal and get into spark-dev
+kubectl exec -it spark-dev -- /bin/bash
+
+# Connect spark-dev to master node
+# <URL> is the URL on the first line of the spark page you just opened (localhost:<PORT>)
+# should be something like "spark://spark-main:<PORT>"
+./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh <URL>
+
+# Now refresh the page, you should see an alive worker. 
 ```
