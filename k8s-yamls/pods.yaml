@@ -4,32 +4,43 @@
 
 
 ### Definition for spark master and its service ###
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: spark-main
   labels:
-    component: spark-main
+    app: spark-main
 spec:
-  containers:
-  - name: spark-main
-    image: ghcr.io/ucsd-ets/spark-notebook:latest
-    command: ["/bin/sh","-c"]
-    args: ["./spark-3.3.0-bin-hadoop3/sbin/start-master.sh; sleep inf"]
-    ports:
-    - containerPort: 7077
-    - containerPort: 8080
-    - containerPort: 4040
-    - containerPort: 20002
-    - containerPort: 50002
-    - containerPort: 60002
-    - containerPort: 60003
-    - containerPort: 60004
+  replicas: 1
+  selector:
+    matchLabels:
+      run: spark-main
+  template:
+    metadata:
+      labels:
+        run: spark-main
+    spec:
+      containers:
+      - name: spark-main
+        image: ghcr.io/ucsd-ets/spark-notebook:latest
+        command: ["/bin/sh","-c"]
+        args: ["./spark-3.3.0-bin-hadoop3/sbin/start-master.sh; sleep inf"]
+        ports:
+        - containerPort: 7077
+        - containerPort: 8080
+        - containerPort: 4040
+        - containerPort: 20002
+        - containerPort: 50002
+        - containerPort: 60002
+        - containerPort: 60003
+        - containerPort: 60004
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: spark-main
+  labels: 
+    run: spark-main
 spec:
   ports:
     - name: webui
@@ -57,36 +68,50 @@ spec:
       port: 60004
       targetPort: 60004
   selector:
-    component: spark-main
+    run: spark-main
 ---
 ### Definition for spark worker and its service ###
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: spark-dev
   labels:
-    component: spark-dev
+    app: spark-dev
 spec:
-  containers:
-  - name: spark-dev
-    image: ghcr.io/ucsd-ets/spark-notebook:latest
-    command: ["/bin/sh","-c"]
-    args: ["./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-main:7077; sleep inf"]
-    ports:
-    - containerPort: 8081
-    - containerPort: 30002
-    - containerPort: 40002
-    - containerPort: 50002
-    - containerPort: 60002
-    - containerPort: 60003
-    - containerPort: 60004
+  replicas: 2
+  selector:
+    matchLabels:
+      run: spark-dev
+  template:
+    metadata:
+      labels:
+        run: spark-dev
+    spec:
+      containers:
+      - name: spark-dev
+        image: ghcr.io/ucsd-ets/spark-notebook:latest
+        command: ["/bin/sh","-c"]
+        args: ["./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-main:7077; sleep inf"]
+        ports:
+        - containerPort: 8081
+        - containerPort: 30002
+        - containerPort: 40002
+        - containerPort: 50002
+        - containerPort: 60002
+        - containerPort: 60003
+        - containerPort: 60004
+      initContainers:
+      - name: init-checker
+        image: ghcr.io/ucsd-ets/spark-notebook:latest
+        command: [/opt/ping-check.sh"]
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name: spark-dev
   labels:
-    component: spark-dev
+    # component: spark-dev
+    run: spark-dev
 spec:
   ports:
     - name: webui
@@ -111,4 +136,4 @@ spec:
       port: 60004
       targetPort: 60004
   selector:
-    component: spark-dev
+    run: spark-dev
