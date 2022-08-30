@@ -1,3 +1,4 @@
+#!/bin/bash
 function ping_check() {
   netcat -zvw10 spark-main 7077
   return $?
