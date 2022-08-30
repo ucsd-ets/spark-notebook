@@ -103,7 +103,8 @@ spec:
       initContainers:
       - name: init-checker
         image: ghcr.io/ucsd-ets/spark-notebook:latest
-        command: [/opt/ping-check.sh"]
+        imagePullPolicy: Always
+        command: ["/opt/ping-check.sh"]
 ---
 kind: Service
 apiVersion: v1
