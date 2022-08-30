@@ -42,6 +42,7 @@ df.show()
 ```
 
 ## k8s development: Set up a Spark Cluster
+*We want to set up a Spark Cluster with 1 master pod and 2 worker pods*
 - ### Build pods
 ```bash
 # clone this repo into its-dsmlpdev-master2:/home/<username>
@@ -52,11 +53,11 @@ cd k8s-yamls
 kubectl apply -f pods.yaml # to run yaml file to build pods
 
 # TIPS
-# check spark pods, should see 2 "Running"
+# check pod status, should see 3 "Running" (re-run if still initializing)
 kubectl get pods | grep spark 
 # check spark service
 kubectl describe svc <SERVICE_NAME>
-# check detailed logs and error (if get one)
+# check logs and error (if get one); you can exec into the pod and follow that path for a detailed log
 kubectl logs <POD_NAME>
 # delete the environment if something is wrong at any time. then re-run yaml file.
 kubectl delete -f pods.yaml
@@ -65,7 +66,7 @@ kubectl delete -f pods.yaml
 **UPDATE: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-main section. Skip this if there.**
 ```bash
 # go into master pod
-kubectl exec -it spark-main -- /bin/bash
+kubectl exec -it <Master_POD_NAME> -- /bin/bash
 
 find / -name <FILE_NAME> # TIP: to search entire filesystem for a file
 # Start the node inside pod
@@ -92,7 +93,7 @@ pkill -f 'port-forward'
 **UPDATE: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-dev section. Skip this if there.**
 ```bash
 # open a separate terminal and get into spark-dev
-kubectl exec -it spark-dev -- /bin/bash
+kubectl exec -it <WORKER_POD_NAME> -- /bin/bash
 
 # Connect spark-dev to master node
 # <URL> is the URL on the first line of the spark page you just opened (localhost:<PORT>)
@@ -101,3 +102,7 @@ kubectl exec -it spark-dev -- /bin/bash
 
 # Now refresh the page, you should see an alive worker. 
 ```
+
+- ### General TIPS:
+- If you make any change to pods.yaml, it's recommended to kubectl delete -f pods.yaml then kubectl apply -f pods.yaml
+- If you make changes to Dockerfile, you must push the change to Github, wait for the action build to complete, before running kubectl apply -f pods.yaml.
