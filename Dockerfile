@@ -37,8 +37,9 @@ RUN ln -s spark-${SPARK_VERSION}-bin-hadoop3 spark && \
 # add scripts and update spark default config
 ADD common.sh spark-master spark-worker /
 ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
+ADD ping-check.sh /opt/ping-check.sh
 
-RUN chmod 777 /spark-master /spark-worker /opt/spark/conf/spark-defaults.conf
+RUN chmod 777 /spark-master /spark-worker /opt/ping-check.sh /spark-worker /opt/spark/conf/spark-defaults.conf
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html

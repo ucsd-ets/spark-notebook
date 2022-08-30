@@ -54,7 +54,11 @@ kubectl apply -f pods.yaml # to run yaml file to build pods
 # TIPS
 # check spark pods, should see 2 "Running"
 kubectl get pods | grep spark 
-# to delete the environment if something is wrong at any time. then re-run yaml file.
+# check spark service
+kubectl describe svc <SERVICE_NAME>
+# check detailed logs and error (if get one)
+kubectl logs <POD_NAME>
+# delete the environment if something is wrong at any time. then re-run yaml file.
 kubectl delete -f pods.yaml
 ```
 - ### Get master pod (spark-main) to work
@@ -67,14 +71,13 @@ find / -name <FILE_NAME> # TIP: to search entire filesystem for a file
 # Start the node inside pod
 ./spark-3.3.0-bin-hadoop3/sbin/start-master.sh 
 ```
-
-```bash
-# port forward to your localhost and confirm that they're connected in the web UI 
+- ### port forward to localhost and confirm in web UI
+```bash 
 # For detailed instruction, please check: https://collab.ucsd.edu/display/ETS/Process+%28DRAFT%29%3A+SSH+Tunneling+to+Service+in+k8s+on+dsmlpdev
 
 # if default 8080 doesn't work, try other port like 7070:8080, 
 # then change to ssh -L 7070:localhost:7070 ......
-kubectl port-forward spark-main 8080:8080 # on its-dsmlpdev-master2
+kubectl port-forward <Master_POD_NAME> 8080:8080 # on its-dsmlpdev-master2
 ssh -L 8080:localhost:8080 -N <username>@its-dsmlpdev-master2.ucsd.edu # on local terminal
 
 # TIPS: 
