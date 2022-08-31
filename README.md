@@ -76,10 +76,13 @@ find / -name <FILE_NAME> # TIP: to search entire filesystem for a file
 ```bash 
 # For detailed instruction, please check: https://collab.ucsd.edu/display/ETS/Process+%28DRAFT%29%3A+SSH+Tunneling+to+Service+in+k8s+on+dsmlpdev
 
-# if default 8080 doesn't work, try other port like 7070:8080, 
-# then change to ssh -L 7070:localhost:7070 ......
+# Current setting: 8080 for master pod, 8081 for workers, 8082 for jupyter pod
+# if default ones don't work, try other ports
+# then change to ssh -L <PORT>:localhost:<PORT> ......
 kubectl port-forward <Master_POD_NAME> 8080:8080 # on its-dsmlpdev-master2
-ssh -L 8080:localhost:8080 -N <username>@its-dsmlpdev-master2.ucsd.edu # on local terminal
+# on local terminal
+ssh -L 8082:localhost:8082 -N haw085@its-dsmlpdev-master2.ucsd.edu # jupyter pod
+ssh -L 8080:localhost:8080 -N <username>@its-dsmlpdev-master2.ucsd.edu # master pod
 
 # TIPS: 
 # If you messed up the port-forward, kill them all to cleanup
