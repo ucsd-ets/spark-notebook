@@ -108,6 +108,17 @@ kubectl exec -it <WORKER_POD_NAME> -- /bin/bash
 
 # Now refresh the page, you should see an alive worker. 
 ```
+- ### Test PySpark works
+**Please make sure that this piece of code works.**
+```python
+# You can either exec into a pod and run "python3" to start an interactive python session
+# or use a test notebook script.
+# We recommend do BOTH.
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.master("spark://spark-main:7077").getOrCreate()
+print("spark session created")
+
+```
 
 - ### General TIPS:
 - If you make any change to pods.yaml, it's recommended to kubectl delete -f pods.yaml then kubectl apply -f pods.yaml
