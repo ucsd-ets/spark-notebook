@@ -48,7 +48,7 @@ df.show()
 # clone this repo into its-dsmlpdev-master2:/home/<username>
 
 sudo -s # login as root
-chown -R <username> # change ownership so you can edit files
+chown -R <username> .# change ownership so you can edit files
 cd k8s-yamls
 kubectl apply -f pods.yaml # to run yaml file to build pods
 
