@@ -11,9 +11,10 @@ RUN apt-get install default-jdk -y
 RUN apt-get install -y curl openssh-client vim
 
 # define spark and hadoop versions
-ENV HADOOP_VERSION 3.3.4
-ENV SPARK_VERSION 3.3.0
-ENV PATH $PATH:/opt/spark/bin
+ENV HADOOP_VERSION=3.3.4
+ENV SPARK_VERSION=3.3.0
+ENV KUBECTL_VERSION=v1.25.0
+ENV PATH=$PATH:/opt/spark/bin
 
 # If the <docker build> throws errors on RUN curl command, it's most likely
 #         the Hadoop and Spark version are out-dated or incompatible.
@@ -34,13 +35,30 @@ RUN curl http://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPA
 RUN ln -s spark-${SPARK_VERSION}-bin-hadoop3 spark && \
     echo Spark ${SPARK_VERSION} installed in /opt
 
+# download and install kubectl
+WORKDIR /opt 
+RUN curl -LO https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+RUN install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+RUN echo kubectl ${KUBECTL_VERSION} installed in /opt
+
+# download and install helm
+WORKDIR /opt 
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+RUN chmod 700 get_helm.sh
+RUN ./get_helm.sh
+
 # add scripts and update spark default config
 ADD common.sh spark-master spark-worker /
 ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 ADD ping-check.sh /opt/ping-check.sh
+ADD jupyter_config.py /etc/jupyter/jupyter_config.py
+ADD k8s-yamls/workers.yaml /opt/workers.yaml
 
-RUN chmod 777 /spark-master /spark-worker /opt/ping-check.sh /spark-worker /opt/spark/conf/spark-defaults.conf
+RUN chmod 777 /spark-master /spark-worker /opt/ping-check.sh /opt/spark/conf/spark-defaults.conf /opt/workers.yaml
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
 RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark -v
+
+# install jupyter-server-proxy
+RUN pip install jupyter-server-proxy -v

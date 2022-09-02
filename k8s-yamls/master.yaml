@@ -1,0 +1,54 @@
+### Definition for spark master ###
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-main
+  labels:
+    app: spark-main
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: spark-main
+  template:
+    metadata:
+      labels:
+        run: spark-main
+    spec:
+      containers:
+      - name: spark-main
+        image: ghcr.io/ucsd-ets/spark-notebook:latest
+        command: ["/bin/sh","-c"]
+        args: ["./spark-3.3.0-bin-hadoop3/sbin/start-master.sh; sleep inf"]
+        ports:
+        - containerPort: 7077
+        - containerPort: 8080
+        - containerPort: 4040
+        - containerPort: 20002
+        - containerPort: 50002
+        - containerPort: 60002
+        - containerPort: 60003
+        - containerPort: 60004
+      automountServiceAccountToken: true
+---
+### Definition for spark jupyter worker ###
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spark-jupyter
+  labels:
+    app: spark-jupyter
+spec:
+  containers:
+  - name: spark-dev
+    image: ghcr.io/ucsd-ets/spark-notebook:latest
+    command: ["/bin/bash","-c"]
+    args: ["jupyter notebook --ip 0.0.0.0 --port 8888 --allow-root --NotebookApp.token=''"]
+    ports:
+    - containerPort: 8082
+    - containerPort: 30007
+    - containerPort: 40007
+    - containerPort: 50007
+    - containerPort: 60007
+    - containerPort: 60008
+    - containerPort: 60009
