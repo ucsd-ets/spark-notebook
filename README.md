@@ -50,17 +50,17 @@ df.show()
 sudo -s # login as root
 chown -R <username> .# change ownership so you can edit files
 cd k8s-yamls
-kubectl apply -f pods.yaml # to run yaml file to build pods
+kubectl apply -f master.yaml # to run yaml file to build pods
 
 # TIPS
-# check pod status, should see 4 "Running" (re-run if still initializing)
+# check pod status, should see 2 "Running" (main and jupyter; re-run if still initializing)
 kubectl get pods | grep spark 
-# check spark service
+# check spark service (not needed now, services are created in workers.yaml)
 kubectl describe svc <SERVICE_NAME>
 # check logs and error (if get one); you can exec into the pod and follow that path for a detailed log
 kubectl logs <POD_NAME>
 # delete the environment if something is wrong at any time. then re-run yaml file.
-kubectl delete -f pods.yaml
+kubectl delete -f workers.yaml
 ```
 - ### Get master pod (spark-main) to work
 **UPDATE: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-main section. Skip this if there.**
@@ -96,7 +96,7 @@ lsof -i:8080 # list all process listening to a port, confirm they are safe to de
 pkill -f 'port-forward'
 ```
 - ### Get worker pod (spark-dev) to work
-**UPDATE: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-dev section. Skip this if there.**
+**UPDATE 1: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-dev section. Skip this if there.**
 ```bash
 # open a separate terminal and get into spark-dev
 kubectl exec -it <WORKER_POD_NAME> -- /bin/bash
@@ -105,8 +105,14 @@ kubectl exec -it <WORKER_POD_NAME> -- /bin/bash
 # <URL> is the URL on the first line of the spark page you just opened (localhost:<PORT>)
 # should be something like "spark://spark-main:<PORT>"
 ./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh <URL>
+```
+**UPDATE 2: We change the workflow by moving the creation of 2 worker pods and all services inside the spark-jupyter pod. This means the user should open a terminal INSIDE the jupyter notebook and run the workers.yaml file.**
+```bash
+# Open a termial window in jupyter notebook and run the following,
+# and you should see output similar to above apply master.yaml
+kubectl apply -f workers.yaml
 
-# Now refresh the page, you should see an alive worker. 
+# Now refresh the dashboard page, you should see 2 alive workers. 
 ```
 - ### Test PySpark works
 **Please make sure that this piece of code works.**
