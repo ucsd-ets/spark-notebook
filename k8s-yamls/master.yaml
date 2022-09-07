@@ -20,6 +20,9 @@ spec:
         image: ghcr.io/ucsd-ets/spark-notebook:latest
         command: ["/bin/sh","-c"]
         args: ["./spark-3.3.0-bin-hadoop3/sbin/start-master.sh; sleep inf"]
+        volumeMounts:
+          name: datasets
+          mountPath: /ds102-wi22-a00-public/datasets
         ports:
         - containerPort: 7077
         - containerPort: 8080
@@ -29,6 +32,11 @@ spec:
         - containerPort: 60002
         - containerPort: 60003
         - containerPort: 60004
+      volumes:
+      - name: datasets
+        nfs:
+          server: its-dsmlp-fs01.ucsd.edu
+          path: /export/datasets/ds102-wi22-a00-public/compilation/dataset_public
       automountServiceAccountToken: true
 ---
 # ClusterRole and ClusterRole binding for spark-main (services)
