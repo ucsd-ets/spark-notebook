@@ -1,61 +1,120 @@
+### Definition for spark master ###
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "spark-notebook-chart.fullname" . }}
+  name: spark-main
   labels:
-    {{- include "spark-notebook-chart.labels" . | nindent 4 }}
+    app: spark-main
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "spark-notebook-chart.selectorLabels" . | nindent 6 }}
+      run: spark-main
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "spark-notebook-chart.selectorLabels" . | nindent 8 }}
+        run: spark-main
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "spark-notebook-chart.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      - name: spark-main
+        image: ghcr.io/ucsd-ets/spark-notebook:latest
+        command: ["/bin/sh","-c"]
+        args: ["./spark-3.3.0-bin-hadoop3/sbin/start-master.sh; sleep inf"]
+        volumeMounts:
+        - name: datasets
+          mountPath: /ds102-wi22-a00-public/datasets
+        ports:
+        - containerPort: 7077
+        - containerPort: 8080
+        - containerPort: 4040
+        - containerPort: 20002
+        - containerPort: 50002
+        - containerPort: 60002
+        - containerPort: 60003
+        - containerPort: 60004
+      volumes:
+      - name: datasets
+        nfs:
+          server: its-dsmlp-fs01.ucsd.edu
+          path: /export/datasets/ds102-wi22-a00-public/compilation/dataset_public
+      automountServiceAccountToken: true
+---
+# ClusterRole and ClusterRole binding for spark-main (services)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  # "namespace" omitted since ClusterRoles are not namespaced
+  name: service-role
+rules:
+- apiGroups: [""]
+  #
+  # at the HTTP level, the name of the resource for accessing Secret
+  # objects is "secrets"
+  resources: ["services"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: use-resources
+subjects:
+- kind: ServiceAccount
+  # Reference to upper's `metadata.name`
+  name: default
+  # Reference to upper's `metadata.namespace`
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: service-role
+  apiGroup: rbac.authorization.k8s.io
+---
+# ClusterRole and ClusterRole binding for spark-main (deployments)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  # "namespace" omitted since ClusterRoles are not namespaced
+  name: deployment-role
+rules:
+- apiGroups: ["apps"]
+  #
+  # at the HTTP level, the name of the resource for accessing Secret
+  # objects is "secrets"
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: use-deployments
+subjects:
+- kind: ServiceAccount
+  # Reference to upper's `metadata.name`
+  name: default
+  # Reference to upper's `metadata.namespace`
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: deployment-role
+  apiGroup: rbac.authorization.k8s.io
+---
+### Definition for spark jupyter worker ###
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spark-jupyter
+  labels:
+    app: spark-jupyter
+spec:
+  containers:
+  - name: spark-dev
+    image: ghcr.io/ucsd-ets/spark-notebook:latest
+    command: ["/bin/bash","-c"]
+    args: ["jupyter notebook --ip 0.0.0.0 --port 8888 --allow-root --NotebookApp.token=''"]
+    ports:
+    - containerPort: 8082
+    - containerPort: 30007
+    - containerPort: 40007
+    - containerPort: 50007
+    - containerPort: 60007
+    - containerPort: 60008
+    - containerPort: 60009

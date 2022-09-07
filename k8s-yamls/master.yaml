@@ -21,7 +21,7 @@ spec:
         command: ["/bin/sh","-c"]
         args: ["./spark-3.3.0-bin-hadoop3/sbin/start-master.sh; sleep inf"]
         volumeMounts:
-          name: datasets
+        - name: datasets
           mountPath: /ds102-wi22-a00-public/datasets
         ports:
         - containerPort: 7077
