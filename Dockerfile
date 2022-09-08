@@ -52,9 +52,12 @@ ADD common.sh spark-master spark-worker /
 ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 ADD ping-check.sh /opt/ping-check.sh
 ADD jupyter_config.py /etc/jupyter/jupyter_config.py
-ADD k8s-yamls/workers.yaml /opt/workers.yaml
+ADD spark-notebook-chart/ /opt/spark-notebook-chart
+ADD start-workers.sh /opt/start-workers.sh
 
-RUN chmod 777 /spark-master /spark-worker /opt/ping-check.sh /opt/spark/conf/spark-defaults.conf /opt/workers.yaml
+RUN chmod 777 /spark-master /spark-worker /opt/ping-check.sh \
+    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
+    /opt/start-workers.sh
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html

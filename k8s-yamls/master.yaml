@@ -106,7 +106,7 @@ metadata:
     app: spark-jupyter
 spec:
   containers:
-  - name: spark-dev
+  - name: spark-jupyter
     image: ghcr.io/ucsd-ets/spark-notebook:latest
     command: ["/bin/bash","-c"]
     args: ["jupyter notebook --ip 0.0.0.0 --port 8888 --allow-root --NotebookApp.token=''"]
