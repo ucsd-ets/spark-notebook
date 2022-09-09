@@ -108,6 +108,9 @@ metadata:
     app: spark-jupyter
 spec:
   ports:
+    - name: spark
+      port: 7077
+      targetPort: 7077
     - name: webui
       port: 8082
       targetPort: 8082

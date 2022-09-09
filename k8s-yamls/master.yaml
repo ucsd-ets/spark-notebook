@@ -82,6 +82,7 @@ spec:
     command: ["/bin/bash","-c"]
     args: ["jupyter notebook --ip 0.0.0.0 --port 8888 --allow-root --NotebookApp.token=''"]
     ports:
+    - containerPort: 7077
     - containerPort: 8082
     - containerPort: 30007
     - containerPort: 40007
