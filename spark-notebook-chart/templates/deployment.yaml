@@ -55,7 +55,7 @@ spec:
       - name: spark-dev
         image: ghcr.io/ucsd-ets/spark-notebook:latest
         command: ["/bin/sh","-c"]
-        args: ["./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-main:7077; sleep inf"]
+        args: ["./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-jupyter:7077; sleep inf"]
         ports:
         - containerPort: 8081
         - containerPort: 30002

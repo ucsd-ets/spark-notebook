@@ -63,6 +63,7 @@ metadata:
   name: start-cluster
 data:
   start-cluster.sh: |
+    #!/bin/bash
     ./spark-3.3.0-bin-hadoop3/sbin/start-master.sh
     helm install spark-notebook-chart /opt/spark-notebook-chart
 ---
