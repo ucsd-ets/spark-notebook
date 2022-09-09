@@ -56,6 +56,16 @@ roleRef:
   name: deployment-role
   apiGroup: rbac.authorization.k8s.io
 ---
+# ConfigMap for start_cluster.sh
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: start-cluster
+data:
+  start-cluster.sh: |
+    ./spark-3.3.0-bin-hadoop3/sbin/start-master.sh
+    helm install spark-notebook-chart /opt/spark-notebook-chart
+---
 ### Definition for spark jupyter worker ###
 apiVersion: v1
 kind: Pod
@@ -78,6 +88,15 @@ spec:
     - containerPort: 60007
     - containerPort: 60008
     - containerPort: 60009
+    volumeMounts:
+      - mountPath: /opt/start-cluster
+        subPath: start-cluster
+        name: config-start-cluster
+  volumes:
+    - name: config-start-cluster
+      configMap:
+        name: start-cluster
+        defaultMode: 0777
 ---
 # ClusterRole and ClusterRole binding for spark-jupyter (services)
 apiVersion: rbac.authorization.k8s.io/v1
@@ -90,7 +109,7 @@ rules:
   #
   # at the HTTP level, the name of the resource for accessing Secret
   # objects is "secrets"
-  resources: ["secrets"]
+  resources: ["secrets", "serviceaccounts"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
