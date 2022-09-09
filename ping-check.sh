@@ -1,6 +1,6 @@
 #!/bin/bash
 function ping_check() {
-  netcat -zvw10 spark-main 7077
+  netcat -zvw10 spark-jupyter 7077
   return $?
 }
 until ping_check; do
