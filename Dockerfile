@@ -50,14 +50,12 @@ RUN ./get_helm.sh
 # add scripts and update spark default config
 ADD common.sh spark-master spark-worker /
 ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
-ADD ping-check.sh /opt/ping-check.sh
 ADD jupyter_config.py /etc/jupyter/jupyter_config.py
 ADD spark-notebook-chart/ /opt/spark-notebook-chart
 ADD start-cluster.sh /opt/start-cluster.sh
 
-RUN chmod 777 /spark-master /spark-worker /opt/ping-check.sh \
-    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
-    /opt/start-cluster.sh
+RUN chmod 777 /spark-master /spark-worker  /opt/start-cluster.sh\
+    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html

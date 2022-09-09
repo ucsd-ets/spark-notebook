@@ -64,11 +64,6 @@ spec:
         - containerPort: 60002
         - containerPort: 60003
         - containerPort: 60004
-      initContainers:
-      - name: init-checker
-        image: ghcr.io/ucsd-ets/spark-notebook:latest
-        imagePullPolicy: Always
-        command: ["/opt/ping-check.sh"]
 ---
 kind: Service
 apiVersion: v1
