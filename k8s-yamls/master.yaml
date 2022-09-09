@@ -89,11 +89,11 @@ spec:
     - containerPort: 60008
     - containerPort: 60009
     volumeMounts:
-      - mountPath: /opt/start-cluster
-        subPath: start-cluster
-        name: config-start-cluster
+      - mountPath: /opt/start-cluster.sh
+        subPath: start-cluster.sh
+        name: config-volume
   volumes:
-    - name: config-start-cluster
+    - name: config-volume
       configMap:
         name: start-cluster
         defaultMode: 0777
