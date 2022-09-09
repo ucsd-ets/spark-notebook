@@ -1,44 +1,3 @@
-### Definition for spark master ###
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: spark-main
-  labels:
-    app: spark-main
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      run: spark-main
-  template:
-    metadata:
-      labels:
-        run: spark-main
-    spec:
-      containers:
-      - name: spark-main
-        image: ghcr.io/ucsd-ets/spark-notebook:latest
-        command: ["/bin/sh","-c"]
-        args: ["./spark-3.3.0-bin-hadoop3/sbin/start-master.sh; sleep inf"]
-        volumeMounts:
-        - name: datasets
-          mountPath: /ds102-wi22-a00-public/datasets
-        ports:
-        - containerPort: 7077
-        - containerPort: 8080
-        - containerPort: 4040
-        - containerPort: 20002
-        - containerPort: 50002
-        - containerPort: 60002
-        - containerPort: 60003
-        - containerPort: 60004
-      volumes:
-      - name: datasets
-        nfs:
-          server: its-dsmlp-fs01.ucsd.edu
-          path: /export/datasets/ds102-wi22-a00-public/compilation/dataset_public
-      automountServiceAccountToken: true
----
 # ClusterRole and ClusterRole binding for spark-main (services)
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -108,6 +67,7 @@ spec:
   containers:
   - name: spark-jupyter
     image: ghcr.io/ucsd-ets/spark-notebook:latest
+    imagePullPolicy: Always
     command: ["/bin/bash","-c"]
     args: ["jupyter notebook --ip 0.0.0.0 --port 8888 --allow-root --NotebookApp.token=''"]
     ports:
