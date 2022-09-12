@@ -67,3 +67,5 @@ RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark -v
 
 # install jupyter-server-proxy
 RUN pip install jupyter-server-proxy -v
+RUN pip install databricks -v
+RUN pip install koalas -v
