@@ -9,6 +9,7 @@ RUN apt-get update
 RUN apt-get install default-jre -y
 RUN apt-get install default-jdk -y
 RUN apt-get install -y curl openssh-client vim
+RUN apt-get install unzip
 
 # define spark and hadoop versions
 ENV HADOOP_VERSION=3.3.4
@@ -53,9 +54,12 @@ ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 ADD jupyter_config.py /etc/jupyter/jupyter_config.py
 ADD spark-notebook-chart/ /opt/spark-notebook-chart
 ADD start-cluster.sh /opt/start-cluster.sh
+ADD PA2.zip /opt/PA2.zip
+RUN unzip PA2.zip
 
-RUN chmod 777 /spark-master /spark-worker  /opt/start-cluster.sh\
-    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart
+RUN chmod 777 /spark-master /spark-worker  /opt/start-cluster.sh \
+    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart 
+RUN chmod -R 777 /opt/PA2
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html

@@ -94,11 +94,17 @@ spec:
       - mountPath: /opt/start-cluster.sh
         subPath: start-cluster.sh
         name: config-volume
+      - mountPath: /datasets/ds102-wi22-a00-public
+        name: datasets
   volumes:
     - name: config-volume
       configMap:
         name: start-cluster
         defaultMode: 0777
+    - name: datasets
+      nfs:
+        server: its-dsmlp-fs01.ucsd.edu
+        path: /export/datasets/ds102-wi22-a00-public/compilation/dataset_public
 ---
 # ClusterRole and ClusterRole binding for spark-jupyter (services)
 apiVersion: rbac.authorization.k8s.io/v1

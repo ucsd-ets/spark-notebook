@@ -55,7 +55,7 @@ spec:
       - name: spark-dev
         image: ghcr.io/ucsd-ets/spark-notebook:latest
         command: ["/bin/sh","-c"]
-        args: ["./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-main:7077; sleep inf"]
+        args: ["./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-jupyter:7077; sleep inf"]
         ports:
         - containerPort: 8081
         - containerPort: 30002
@@ -64,11 +64,6 @@ spec:
         - containerPort: 60002
         - containerPort: 60003
         - containerPort: 60004
-      initContainers:
-      - name: init-checker
-        image: ghcr.io/ucsd-ets/spark-notebook:latest
-        imagePullPolicy: Always
-        command: ["/opt/ping-check.sh"]
 ---
 kind: Service
 apiVersion: v1
@@ -113,6 +108,9 @@ metadata:
     app: spark-jupyter
 spec:
   ports:
+    - name: spark
+      port: 7077
+      targetPort: 7077
     - name: webui
       port: 8082
       targetPort: 8082
