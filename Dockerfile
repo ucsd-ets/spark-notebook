@@ -47,6 +47,7 @@ WORKDIR /opt
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 RUN chmod 700 get_helm.sh
 RUN ./get_helm.sh
+RUN rm get_helm.sh
 
 # add scripts and update spark default config
 ADD common.sh spark-master spark-worker /
@@ -56,6 +57,7 @@ ADD spark-notebook-chart/ /opt/spark-notebook-chart
 ADD start-cluster.sh /opt/start-cluster.sh
 ADD PA2.zip /opt/PA2.zip
 RUN unzip PA2.zip
+RUN rm PA2.zip
 
 RUN chmod 777 /spark-master /spark-worker  /opt/start-cluster.sh \
     /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart 
