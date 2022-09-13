@@ -57,6 +57,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ---
 # ConfigMap for start_cluster.sh
+# ./spark-3.3.0-bin-hadoop3/sbin/start-master.sh
 apiVersion: v1
 kind: ConfigMap
 metadata:
