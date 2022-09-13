@@ -56,6 +56,13 @@ spec:
         image: ghcr.io/ucsd-ets/spark-notebook:latest
         command: ["/bin/sh","-c"]
         args: ["./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-jupyter:7077; sleep inf"]
+        resources:
+          requests:
+            memory: "32Gi"
+            cpu: "2000m"
+          limits:
+            memory: "32Gi"
+            cpu: "3000m"
         ports:
         - containerPort: 8081
         - containerPort: 30002
