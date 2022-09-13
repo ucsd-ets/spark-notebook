@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: spark-main
+  name: spark-master
   labels: 
-    run: spark-main
+    run: spark-master
 spec:
   ports:
     - name: webui
@@ -32,27 +32,27 @@ spec:
       port: 60004
       targetPort: 60004
   selector:
-    run: spark-main
+    run: spark-master
 ---
 ### Definition for spark worker and its service ###
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spark-dev
+  name: spark-worker
   labels:
-    app: spark-dev
+    app: spark-worker
 spec:
   replicas: 2
   selector:
     matchLabels:
-      run: spark-dev
+      run: spark-worker
   template:
     metadata:
       labels:
-        run: spark-dev
+        run: spark-worker
     spec:
       containers:
-      - name: spark-dev
+      - name: spark-worker
         image: ghcr.io/ucsd-ets/spark-notebook:latest
         command: ["/bin/sh","-c"]
         args: ["./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-jupyter:7077; sleep inf"]
@@ -75,10 +75,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: spark-dev
+  name: spark-worker
   labels:
-    # component: spark-dev
-    run: spark-dev
+    # component: spark-worker
+    run: spark-worker
 spec:
   ports:
     - name: webui
@@ -103,7 +103,7 @@ spec:
       port: 60004
       targetPort: 60004
   selector:
-    run: spark-dev
+    run: spark-worker
 ---
 ### Definition for service ofs park jupyter worker ###
 kind: Service
@@ -111,7 +111,7 @@ apiVersion: v1
 metadata:
   name: spark-jupyter
   labels:
-    # component: spark-dev
+    # component: spark-worker
     app: spark-jupyter
 spec:
   ports:
