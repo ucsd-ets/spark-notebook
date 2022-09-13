@@ -52,7 +52,7 @@ RUN rm get_helm.sh
 # add scripts and update spark default config
 ADD common.sh spark-master spark-worker /
 ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
-ADD spark-env.sh /opt/spark/conf/spark-env.conf
+ADD spark-env.sh /opt/spark/conf/spark-env.sh
 ADD jupyter_config.py /etc/jupyter/jupyter_config.py
 ADD spark-notebook-chart/ /opt/spark-notebook-chart
 ADD start-cluster.sh /opt/start-cluster.sh
@@ -62,7 +62,7 @@ RUN rm PA2.zip
 
 RUN chmod 777 /spark-master /spark-worker  /opt/start-cluster.sh \
     /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
-    /opt/spark/conf/spark-env.conf
+    /opt/spark/conf/spark-env.sh
 RUN chmod -R 777 /opt/PA2
 
 # install pyspark
