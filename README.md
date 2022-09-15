@@ -49,18 +49,17 @@ df.show()
 
 sudo -s # login as root
 chown -R <username> .# change ownership so you can edit files
-cd k8s-yamls
-kubectl apply -f master.yaml # to run yaml file to build pods
+kubectl apply -f k8s-yamls/master.yaml # to run yaml file to build master pod
 
 # TIPS
-# check pod status, should see 2 "Running" (main and jupyter; re-run if still initializing)
+# check pod status, should see 1 "Running" (spark-jupyter)
 kubectl get pods | grep spark 
-# check spark service (not needed now, services are created in workers.yaml)
+# check spark service (not needed now, services are created in helm chart)
 kubectl describe svc <SERVICE_NAME>
 # check logs and error (if get one); you can exec into the pod and follow that path for a detailed log
 kubectl logs <POD_NAME>
 # delete the environment if something is wrong at any time. then re-run yaml file.
-kubectl delete -f workers.yaml
+kubectl delete -f k8s-yamls/workers.yaml
 ```
 - ### Get master pod (spark-main) to work
 **UPDATE: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-main section. Skip this if there.**

@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: ucsdets/spark-notebook
@@ -13,6 +13,44 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+workers:
+  podName: spark-dev
+  ports: 
+    - name: webui
+      portNumber: 8081
+    - name: workerport
+      portNumber: 30002
+    - name: executorport
+      portNumber: 40002
+    - name: blockmgr
+      portNumber: 50002
+    - name: fileserverport
+      portNumber: 60002
+    - name: broadcastport
+      portNumber: 60003
+    - name: replicaport
+      portNumber: 60004
+
+master:
+  podName: spark-jupyter
+  ports: 
+    - name: spark
+      portNumber: 7077
+    - name: webui
+      portNumber: 8082
+    - name: workerport
+      portNumber: 30007
+    - name: executorport
+      portNumber: 40007
+    - name: blockmgr
+      portNumber: 50007
+    - name: fileserverport
+      portNumber: 60007
+    - name: broadcastport
+      portNumber: 60008
+    - name: replicaport
+      portNumber: 60009
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -38,7 +76,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 8080
+  portNumber: 8080
 
 ingress:
   enabled: false
