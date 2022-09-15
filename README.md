@@ -48,24 +48,27 @@ df.show()
 # clone this repo into its-dsmlpdev-master2:/home/<username>
 
 sudo -s # login as root
-chown -R <username> .# change ownership so you can edit files
+chown -R <username> . # change ownership so you can edit files
 kubectl apply -f k8s-yamls/master.yaml # to run yaml file to build master pod
 
 # TIPS
 # check pod status, should see 1 "Running" (spark-jupyter)
 kubectl get pods | grep spark 
+kubectl describe pod <POD_NAME>
 # check spark service (not needed now, services are created in helm chart)
+kubectl get svc | grep spark 
 kubectl describe svc <SERVICE_NAME>
-# check logs and error (if get one); you can exec into the pod and follow that path for a detailed log
+# check logs and error (if get one); you can exec into the pod (see below section) for a detailed log
 kubectl logs <POD_NAME>
 # delete the environment if something is wrong at any time. then re-run yaml file.
-kubectl delete -f k8s-yamls/workers.yaml
+kubectl delete -f k8s-yamls/master.yaml
+helm uninstall spark-notebook-chart # workers and service will be handled by helm
 ```
-- ### Get master pod (spark-main) to work
-**UPDATE: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-main section. Skip this if there.**
+- ### Get master pod (spark-jupyter) to work
+**UPDATE: This section has been automated.**
 ```bash
-# go into master pod
-kubectl exec -it <Master_POD_NAME> -- /bin/bash
+# go into jupyter pod
+kubectl exec -it spark-jupyter -- /bin/bash
 
 find / -name <FILE_NAME> # TIP: to search entire filesystem for a file
 # Start the node inside pod
@@ -75,27 +78,23 @@ find / -name <FILE_NAME> # TIP: to search entire filesystem for a file
 ```bash 
 # For detailed instruction, please check: https://collab.ucsd.edu/display/ETS/Process+%28DRAFT%29%3A+SSH+Tunneling+to+Service+in+k8s+on+dsmlpdev
 
-# Current setting: 8080 for master pod, 8081 for workers, 8082 for jupyter pod
+# Current setting: 8081 for workers, 8082 for jupyter pod (role of master)
 # if default ones don't work, try other ports
 # on its-dsmlpdev-master2
-kubectl port-forward <Master_POD_NAME> 8080:8080 # master pod
 kubectl port-forward spark-jupyter 8082:8888 # jupyter pod
 # on local terminal
-ssh -L 8080:localhost:8080 -N <username>@its-dsmlpdev-master2.ucsd.edu # master pod
 ssh -L 8082:localhost:8082 -N haw085@its-dsmlpdev-master2.ucsd.edu # jupyter pod
 
-# Then you should be able to open the Spark Dashboard in your browser at:
-localhost:8080
-# and a jupyter notebook at:
+# Then you should be able to open a jupyter notebook at:
 localhost:8082
 
 # TIPS: 
 # If you messed up the port-forward, kill them all to cleanup
-lsof -i:8080 # list all process listening to a port, confirm they are safe to delete, then
+lsof -i:8082 # list all process listening to a port, confirm they are safe to delete, then
 pkill -f 'port-forward'
 ```
 - ### Get worker pod (spark-dev) to work
-**UPDATE 1: This section has been automated. Please confirm that command and args entries are in pods.yaml spark-dev section. Skip this if there.**
+**UPDATE 1: This section has been automated.**
 ```bash
 # open a separate terminal and get into spark-dev
 kubectl exec -it <WORKER_POD_NAME> -- /bin/bash
@@ -105,14 +104,11 @@ kubectl exec -it <WORKER_POD_NAME> -- /bin/bash
 # should be something like "spark://spark-main:<PORT>"
 ./spark-3.3.0-bin-hadoop3/sbin/start-worker.sh <URL>
 ```
-**UPDATE 2: We change the workflow by moving the creation of 2 worker pods and all services inside the spark-jupyter pod. This means the user should open a terminal INSIDE the jupyter notebook and run the workers.yaml file.**
-```bash
-# Open a termial window in jupyter notebook and run the following,
-# and you should see output similar to above apply master.yaml
-kubectl apply -f workers.yaml
+**UPDATE 2: We change the workflow by moving the creation of 2 worker pods and all services inside helm chart. Once the user open a test-server, helm chart will be created, with all services and 2 worker pods**
 
-# Now refresh the dashboard page, you should see 2 alive workers. 
-```
+By clicking New -> test-server, you should see a spark dashboard; 
+wait for 1 min and refresh, you should see 2 workers connected.
+
 - ### Test PySpark works
 **Please make sure that this piece of code works.**
 ```python
