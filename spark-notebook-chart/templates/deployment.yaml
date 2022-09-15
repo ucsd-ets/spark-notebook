@@ -29,6 +29,6 @@ spec:
             cpu: "3000m"
         ports: 
         {{- range .Values.workers.ports}}
-        - containerPort: {{.portNumber}}
+        - containerPort: {{ .portNumber }}
         {{- end }} 
 
