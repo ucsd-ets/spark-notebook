@@ -5,15 +5,18 @@ metadata:
   name: spark-dev
   labels:
     app: spark-dev
+    {{- include "spark-notebook-chart.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount | default 2}}
   selector:
     matchLabels:
       run: spark-dev
+      {{- include "spark-notebook-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         run: spark-dev
+        {{- include "spark-notebook-chart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - name: spark-dev
@@ -31,4 +34,3 @@ spec:
         {{- range .Values.workers.ports}}
         - containerPort: {{ .portNumber }}
         {{- end }} 
-
