@@ -1,61 +1,3 @@
-# ClusterRole and ClusterRole binding for spark-main (services)
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  # "namespace" omitted since ClusterRoles are not namespaced
-  name: service-role
-rules:
-- apiGroups: [""]
-  #
-  # at the HTTP level, the name of the resource for accessing Secret
-  # objects is "secrets"
-  resources: ["services"]
-  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: use-resources
-subjects:
-- kind: ServiceAccount
-  # Reference to upper's `metadata.name`
-  name: default
-  # Reference to upper's `metadata.namespace`
-  namespace: default
-roleRef:
-  kind: ClusterRole
-  name: service-role
-  apiGroup: rbac.authorization.k8s.io
----
-# ClusterRole and ClusterRole binding for spark-main (deployments)
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  # "namespace" omitted since ClusterRoles are not namespaced
-  name: deployment-role
-rules:
-- apiGroups: ["apps"]
-  #
-  # at the HTTP level, the name of the resource for accessing Secret
-  # objects is "secrets"
-  resources: ["deployments"]
-  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: use-deployments
-subjects:
-- kind: ServiceAccount
-  # Reference to upper's `metadata.name`
-  name: default
-  # Reference to upper's `metadata.namespace`
-  namespace: default
-roleRef:
-  kind: ClusterRole
-  name: deployment-role
-  apiGroup: rbac.authorization.k8s.io
----
 # ConfigMap for start_cluster.sh
 # ./spark-3.3.0-bin-hadoop3/sbin/start-master.sh
 apiVersion: v1
@@ -107,7 +49,7 @@ spec:
         server: its-dsmlp-fs01.ucsd.edu
         path: /export/datasets/ds102-wi22-a00-public/compilation/dataset_public
 ---
-# ClusterRole and ClusterRole binding for spark-jupyter (services)
+# ClusterRole and ClusterRole binding for apiGroups ""
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -118,7 +60,7 @@ rules:
   #
   # at the HTTP level, the name of the resource for accessing Secret
   # objects is "secrets"
-  resources: ["secrets", "serviceaccounts"]
+  resources: ["services", "secrets", "serviceaccounts"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -134,4 +76,33 @@ subjects:
 roleRef:
   kind: ClusterRole
   name: secret-role
+  apiGroup: rbac.authorization.k8s.io
+---
+# ClusterRole and ClusterRole binding for apiGroups "apps"
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  # "namespace" omitted since ClusterRoles are not namespaced
+  name: deployment-role
+rules:
+- apiGroups: ["apps"]
+  #
+  # at the HTTP level, the name of the resource for accessing Secret
+  # objects is "secrets"
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: use-deployments
+subjects:
+- kind: ServiceAccount
+  # Reference to upper's `metadata.name`
+  name: default
+  # Reference to upper's `metadata.namespace`
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: deployment-role
   apiGroup: rbac.authorization.k8s.io

@@ -83,7 +83,7 @@ find / -name <FILE_NAME> # TIP: to search entire filesystem for a file
 # on its-dsmlpdev-master2
 kubectl port-forward spark-jupyter 8082:8888 # jupyter pod
 # on local terminal
-ssh -L 8082:localhost:8082 -N haw085@its-dsmlpdev-master2.ucsd.edu # jupyter pod
+ssh -L 8082:localhost:8082 -N haw085@its-dsmlp-master.ucsd.edu # jupyter pod
 
 # Then you should be able to open a jupyter notebook at:
 localhost:8082
