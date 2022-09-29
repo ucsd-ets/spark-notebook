@@ -50,7 +50,7 @@ RUN ./get_helm.sh
 RUN rm get_helm.sh
 
 # add scripts and update spark default config
-# ADD common.sh spark-master spark-worker /
+ADD spark-master spark-worker /
 ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 # ADD spark-env.sh /opt/spark/conf/spark-env.sh
 ADD jupyter_config.py /etc/jupyter/jupyter_config.py
