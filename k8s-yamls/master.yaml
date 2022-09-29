@@ -7,7 +7,7 @@ metadata:
 data:
   start-cluster.sh: |
     #!/bin/bash
-    ./spark-3.3.0-bin-hadoop3/sbin/start-master.sh
+    /opt/spark-3.3.0-bin-hadoop3/sbin/start-master.sh
     helm install spark-notebook-chart /opt/spark-notebook-chart
 ---
 ### Definition for spark jupyter worker ###
