@@ -33,6 +33,7 @@ RUN ln -s hadoop-${HADOOP_VERSION} hadoop && \
 WORKDIR /opt 
 RUN curl http://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3.tgz | \
         tar -zx
+RUN chmod 777 spark-${SPARK_VERSION}-bin-hadoop3
 RUN ln -s spark-${SPARK_VERSION}-bin-hadoop3 spark && \
     echo Spark ${SPARK_VERSION} installed in /opt
 
