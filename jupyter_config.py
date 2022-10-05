@@ -1,6 +1,6 @@
 c.ServerProxy.servers = {
-  'spark-dashboard': {
-    'command': ['/opt/spark-3.3.0-bin-hadoop3/sbin/start-master.sh'],
+  'test-server': {
+    'command': ['/opt/start-cluster.sh'],
     'absolute_url': False,
     'port': 8080
     }

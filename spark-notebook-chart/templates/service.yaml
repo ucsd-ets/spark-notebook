@@ -1,0 +1,36 @@
+# Service for spark workers
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.workers.podName }}
+  labels:
+    run: {{ .Values.workers.podName }}
+    {{- include "spark-notebook-chart.labels" . | nindent 4 }}
+spec:
+  ports:
+    {{- range .Values.workers.ports}}
+    - name: {{.name}}
+      port: {{.portNumber}}
+      targetPort: {{.portNumber}}
+    {{- end }} 
+  selector:
+    run: {{ .Values.workers.podName }}
+    {{- include "spark-notebook-chart.selectorLabels" . | nindent 4 }}
+---
+### Definition for service of spark jupyter (master) ###
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.master.podName }}
+  labels:
+    # component: spark-dev
+    app: {{ .Values.master.podName }}
+spec:
+  ports:
+    {{- range .Values.master.ports}}
+    - name: {{.name}}
+      port: {{.portNumber}}
+      targetPort: {{.portNumber}}
+    {{- end }}
+  selector:
+    app: {{ .Values.master.podName }}

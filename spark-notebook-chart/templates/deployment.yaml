@@ -1,0 +1,36 @@
+### Definition for spark workers ###
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-dev
+  labels:
+    app: spark-dev
+    {{- include "spark-notebook-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount | default 2}}
+  selector:
+    matchLabels:
+      run: spark-dev
+      {{- include "spark-notebook-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        run: spark-dev
+        {{- include "spark-notebook-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: spark-dev
+        image: ghcr.io/ucsd-ets/spark-notebook:latest
+        command: ["/bin/sh","-c"]
+        args: ["/opt/spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://spark-jupyter:7077; sleep inf"]
+        resources:
+          requests:
+            memory: "32Gi"
+            cpu: "2000m"
+          limits:
+            memory: "32Gi"
+            cpu: "3000m"
+        ports: 
+        {{- range .Values.workers.ports}}
+        - containerPort: {{ .portNumber }}
+        {{- end }} 
