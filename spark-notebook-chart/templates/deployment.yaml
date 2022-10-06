@@ -7,6 +7,8 @@ metadata:
     app: spark-dev
     {{- include "spark-notebook-chart.labels" . | nindent 4 }}
 spec:
+  securityContext:
+    runAsUser: {{ .Values.uid }}
   replicas: {{ .Values.replicaCount | default 2}}
   selector:
     matchLabels:
