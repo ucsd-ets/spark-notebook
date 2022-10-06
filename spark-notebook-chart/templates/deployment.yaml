@@ -7,8 +7,6 @@ metadata:
     app: spark-dev
     {{- include "spark-notebook-chart.labels" . | nindent 4 }}
 spec:
-  securityContext:
-    runAsUser: {{ .Values.uid }}
   replicas: {{ .Values.replicaCount | default 2}}
   selector:
     matchLabels:
@@ -20,6 +18,8 @@ spec:
         run: spark-dev
         {{- include "spark-notebook-chart.selectorLabels" . | nindent 8 }}
     spec:
+      securityContext:
+        runAsUser: {{ .Values.uid }}
       containers:
       - name: spark-dev
         image: ghcr.io/ucsd-ets/spark-notebook:latest
