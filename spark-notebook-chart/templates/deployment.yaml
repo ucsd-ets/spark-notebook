@@ -81,7 +81,12 @@ spec:
           - mountPath: /etc/passwd
             subPath: passwd
             name: config-volume
+          - mountPath: /home/{{ .Values.username}
+            name: home
       volumes:
+        - name: home
+          persistentVolumeClaim:
+            claimName: home
         - name: config-volume
           configMap:
             name: passwd
