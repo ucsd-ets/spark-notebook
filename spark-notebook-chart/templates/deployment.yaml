@@ -68,11 +68,11 @@ spec:
         ]
         resources:
           requests:
-            memory: "32Gi"
+            memory: "16Gi"
             cpu: "2000m"
           limits:
-            memory: "32Gi"
-            cpu: "3000m"
+            memory: "16Gi"
+            cpu: "2000m"
         ports: 
         {{- range .Values.workers.ports}}
         - containerPort: {{ .portNumber }}
