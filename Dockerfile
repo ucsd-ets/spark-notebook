@@ -1,4 +1,4 @@
-FROM ucsdets/datahub-base-notebook:2022.3-stable
+FROM ucsdets/scipy-ml-notebook:2022.3-stable
 
 USER root
 
@@ -11,11 +11,13 @@ RUN apt-get install default-jdk -y
 RUN apt-get install -y curl openssh-client vim
 RUN apt-get install unzip
 
-# define spark and hadoop versions
+# define spark & hadoop versions, helm chart name & path
 ENV HADOOP_VERSION=3.3.4
 ENV SPARK_VERSION=3.3.0
 ENV KUBECTL_VERSION=v1.25.0
 ENV PATH=$PATH:/opt/spark/bin
+ENV SPARK_CHART_NAME=spark-notebook-chart
+ENV SPARK_CHART_PATH=/opt/$SPARK_CHART_NAME
 
 # If the <docker build> throws errors on RUN curl command, it's most likely
 #         the Hadoop and Spark version are out-dated or incompatible.
