@@ -33,5 +33,5 @@ spec:
       targetPort: {{.portNumber}}
     {{- end }}
   selector:
-    app: {{ .Values.master.podName }}
+    # app: {{ .Values.master.podName }}
     dsmlp/app: spark
