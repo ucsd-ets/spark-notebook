@@ -63,9 +63,11 @@ ADD start-cluster.sh /opt/start-cluster.sh
 ADD PA2.zip /opt/PA2.zip
 RUN unzip PA2.zip && \
     rm PA2.zip
+ADD sanity_check.ipynb /opt/sannity_check.ipynb 
 
 RUN chmod 777 /spark-master /spark-worker  /opt/start-cluster.sh \
-    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart && \
+    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
+    /opt/sannity_check.ipynb && \
     chmod -R 777 /opt/PA2
 
 # install pyspark
@@ -74,3 +76,7 @@ RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark -v
 
 # install jupyter-server-proxy
 RUN pip install jupyter-server-proxy databricks koalas -v
+
+# install tensorflow and torch
+RUN pip install tensorflow
+RUN pip install torch torchvision torchaudio
