@@ -2,14 +2,14 @@ FROM ucsdets/scipy-ml-notebook:2022.3-stable
 
 USER root
 
-RUN apt-get update
-RUN apt-get install software-properties-common -y
-RUN add-apt-repository ppa:deadsnakes/ppa -y
-RUN apt-get update
-RUN apt-get install default-jre -y
-RUN apt-get install default-jdk -y
-RUN apt-get install -y curl openssh-client vim
-RUN apt-get install unzip
+RUN apt-get update && \
+    apt-get install software-properties-common -y && \
+    add-apt-repository ppa:deadsnakes/ppa -y
+# RUN apt-get update
+RUN apt-get install default-jre -y && \
+    apt-get install default-jdk -y && \
+    apt-get install -y curl openssh-client vim && \
+    apt-get install unzip
 
 # define spark & hadoop versions, helm chart name & path
 ENV HADOOP_VERSION=3.3.4
@@ -42,16 +42,16 @@ RUN ln -s spark-${SPARK_VERSION}-bin-hadoop3 spark && \
 
 # download and install kubectl
 WORKDIR /opt 
-RUN curl -LO https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
-RUN install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-RUN echo kubectl ${KUBECTL_VERSION} installed in /opt
+RUN curl -LO https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
+    install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
+    echo kubectl ${KUBECTL_VERSION} installed in /opt
 
 # download and install helm
 WORKDIR /opt 
-RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-RUN chmod 700 get_helm.sh
-RUN ./get_helm.sh
-RUN rm get_helm.sh
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
+    chmod 700 get_helm.sh && \
+    ./get_helm.sh && \
+    rm get_helm.sh
 
 # add scripts and update spark default config
 ADD spark-master spark-worker /
@@ -61,18 +61,16 @@ ADD jupyter_config.py /etc/jupyter/jupyter_config.py
 ADD spark-notebook-chart/ /opt/spark-notebook-chart
 ADD start-cluster.sh /opt/start-cluster.sh
 ADD PA2.zip /opt/PA2.zip
-RUN unzip PA2.zip
-RUN rm PA2.zip
+RUN unzip PA2.zip && \
+    rm PA2.zip
 
 RUN chmod 777 /spark-master /spark-worker  /opt/start-cluster.sh \
-    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart
-RUN chmod -R 777 /opt/PA2
+    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart && \
+    chmod -R 777 /opt/PA2
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
 RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark -v
 
 # install jupyter-server-proxy
-RUN pip install jupyter-server-proxy -v
-RUN pip install databricks -v
-RUN pip install koalas -v
+RUN pip install jupyter-server-proxy databricks koalas -v
