@@ -76,7 +76,16 @@ RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark -v
 
 # install jupyter-server-proxy
 RUN pip install jupyter-server-proxy databricks koalas -v
-
+  
 # install tensorflow and torch
-RUN pip install tensorflow
-RUN pip install torch torchvision torchaudio
+RUN mamba install cudatoolkit=11.2 && \
+    pip install tensorflow==2.6
+
+ARG TORCH_VER="1.7.1+cu101"        
+ARG TORCH_VIS_VER="0.8.2+cu101"        
+ARG TORCH_AUD_VER="0.7.2"        
+        
+RUN pip install torch==${TORCH_VER} torchvision==${TORCH_VIS_VER} torchaudio==${TORCH_AUD_VER} \  
+    -f https://download.pytorch.org/whl/torch_stable.html && \        
+    fix-permissions $CONDA_DIR && \        
+    fix-permissions /home/$NB_USER
