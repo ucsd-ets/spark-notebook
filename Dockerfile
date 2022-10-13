@@ -63,11 +63,11 @@ ADD start-cluster.sh /opt/start-cluster.sh
 ADD PA2.zip /opt/PA2.zip
 RUN unzip PA2.zip && \
     rm PA2.zip
-ADD sanity_check.ipynb /opt/sannity_check.ipynb 
+ADD sanity_check.ipynb /opt/sanity_check.ipynb 
 
 RUN chmod 777 /spark-master /spark-worker  /opt/start-cluster.sh \
     /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
-    /opt/sannity_check.ipynb && \
+    /opt/sanity_check.ipynb && \
     chmod -R 777 /opt/PA2
 
 # install pyspark
