@@ -60,12 +60,13 @@ ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 ADD jupyter_config.py /etc/jupyter/jupyter_config.py
 ADD spark-notebook-chart/ /opt/spark-notebook-chart
 ADD start-cluster.sh /opt/start-cluster.sh
+ADD stop-cluster.sh /opt/stop-cluster.sh
 ADD PA2.zip /opt/PA2.zip
 RUN unzip PA2.zip && \
     rm PA2.zip
 ADD sanity_check.ipynb /opt/sanity_check.ipynb 
 
-RUN chmod 777 /spark-master /spark-worker  /opt/start-cluster.sh \
+RUN chmod 777 /spark-master /spark-worker  /opt/*.sh \
     /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
     /opt/sanity_check.ipynb && \
     chmod -R 777 /opt/PA2
