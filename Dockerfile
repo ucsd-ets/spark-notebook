@@ -78,7 +78,7 @@ RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark -v
 RUN pip install jupyter-server-proxy databricks koalas -v
   
 # install tensorflow and torch
-RUN mamba install cudatoolkit=11.2 && \
+RUN mamba install cudatoolkit=11.2 cudnn && \
     pip install tensorflow==2.6
 
 ARG TORCH_VER="1.7.1+cu101"        
