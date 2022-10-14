@@ -61,6 +61,9 @@ ADD jupyter_config.py /etc/jupyter/jupyter_config.py
 ADD spark-notebook-chart/ /opt/spark-notebook-chart
 ADD start-cluster.sh /opt/start-cluster.sh
 ADD stop-cluster.sh /opt/stop-cluster.sh
+
+ENV STOP_CLUSTER_SCRIPT_PATH=/opt/stop-cluster.sh
+
 ADD PA2.zip /opt/PA2.zip
 RUN unzip PA2.zip && \
     rm PA2.zip
