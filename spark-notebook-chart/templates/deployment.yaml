@@ -42,12 +42,12 @@ spec:
   replicas: {{ .Values.replicaCount | default 2}}
   selector:
     matchLabels:
-      run: worker
+      app: worker
       {{- include "spark-notebook-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        run: worker
+        app: worker
         {{- include "spark-notebook-chart.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
@@ -66,7 +66,7 @@ spec:
         args: [
               "/bin/sh",
               "-c",
-              "/opt/spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://{{ .Values.master.podName }}:7077; sleep inf"
+              "/opt/spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://master:7077; sleep inf"
         ]
         resources:
           requests:
@@ -102,15 +102,15 @@ metadata:
     app: master
     {{- include "spark-notebook-chart.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount | default 2}}
+  replicas: 1
   selector:
     matchLabels:
-      run: master
+      app: master
       {{- include "spark-notebook-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        run: master
+        app: master
         {{- include "spark-notebook-chart.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
@@ -129,7 +129,7 @@ spec:
         args: [
               "/bin/sh",
               "-c",
-              "/opt/spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://{{ .Values.master.podName }}:7077; sleep inf"
+              "/opt/spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://master:7077; sleep inf"
         ]
         resources:
           requests:
