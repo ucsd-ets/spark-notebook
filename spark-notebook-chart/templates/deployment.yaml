@@ -34,31 +34,96 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spark-dev
+  name: worker
   labels:
-    app: spark-dev
+    app: worker
     {{- include "spark-notebook-chart.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount | default 2}}
   selector:
     matchLabels:
-      run: spark-dev
+      run: worker
       {{- include "spark-notebook-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        run: spark-dev
+        run: worker
         {{- include "spark-notebook-chart.selectorLabels" . | nindent 8 }}
     spec:
       securityContext:
         runAsUser: {{ .Values.uid }}
       containers:
-      - name: spark-dev
+      - name: worker
         image: ghcr.io/ucsd-ets/spark-notebook:latest
         env:
         - name: SPARK_USER
           value: {{ .Values.username }}
         - name: USER
+          value: {{ .Values.username }}
+        - name: LOGNAME
+          value: {{ .Values.username }}
+        # command: ["/bin/sh","-c"]
+        args: [
+              "/bin/sh",
+              "-c",
+              "/opt/spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://{{ .Values.master.podName }}:7077; sleep inf"
+        ]
+        resources:
+          requests:
+            memory: "16Gi"
+            cpu: "2000m"
+          limits:
+            memory: "16Gi"
+            cpu: "2000m"
+        ports: 
+        {{- range .Values.workers.ports}}
+        - containerPort: {{ .portNumber }}
+        {{- end }} 
+        volumeMounts:
+          - mountPath: /etc/passwd
+            subPath: passwd
+            name: config-volume
+          - mountPath: /home/{{ .Values.username }}
+            name: home
+      volumes:
+        - name: home
+          persistentVolumeClaim:
+            claimName: home
+        - name: config-volume
+          configMap:
+            name: passwd
+            defaultMode: 0777
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: master
+  labels:
+    app: master
+    {{- include "spark-notebook-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount | default 2}}
+  selector:
+    matchLabels:
+      run: master
+      {{- include "spark-notebook-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        run: master
+        {{- include "spark-notebook-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        runAsUser: {{ .Values.uid }}
+      containers:
+      - name: master
+        image: ghcr.io/ucsd-ets/spark-notebook:latest
+        env:
+        - name: SPARK_USER
+          value: {{ .Values.username }}
+        - name: USER
+          value: {{ .Values.username }}
+        - name: LOGNAME
           value: {{ .Values.username }}
         # command: ["/bin/sh","-c"]
         args: [

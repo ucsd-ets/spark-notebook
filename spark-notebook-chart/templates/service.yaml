@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.workers.podName }}
+  name: worker
   labels:
-    run: {{ .Values.workers.podName }}
+    run: worker
     {{- include "spark-notebook-chart.labels" . | nindent 4 }}
 spec:
   ports:
@@ -14,17 +14,17 @@ spec:
       targetPort: {{.portNumber}}
     {{- end }} 
   selector:
-    run: {{ .Values.workers.podName }}
+    run: worker
     {{- include "spark-notebook-chart.selectorLabels" . | nindent 4 }}
 ---
 ### Definition for service of spark jupyter (master) ###
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ .Values.master.podName }}
+  name: master
   labels:
     # component: spark-dev
-    app: {{ .Values.master.podName }}
+    app: master
 spec:
   ports:
     {{- range .Values.master.ports}}
@@ -33,5 +33,4 @@ spec:
       targetPort: {{.portNumber}}
     {{- end }}
   selector:
-    # app: {{ .Values.master.podName }}
-    dsmlp/app: spark
+    app: master

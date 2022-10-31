@@ -14,7 +14,15 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+
+
 workers:
+  cpu:
+    limits: 2
+    requests: 0.5
+  mem:
+    limits: 8Gi
+    requests: 4Gi
   podName: spark-dev
   ports: 
     - name: webui
@@ -33,6 +41,12 @@ workers:
       portNumber: 60004
 
 master:
+  cpu:
+    limits: 2
+    requests: 0.5
+  mem:
+    limits: 8Gi
+    requests: 4Gi
   podName: spark-jupyter
   ports: 
     - name: spark
