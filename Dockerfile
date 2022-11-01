@@ -33,6 +33,7 @@ ADD port-forward.sh /opt/port-forward.sh
 
 RUN chmod 777  /opt/*.sh
 
+ENV SPARK_CHART_NAME=spark
 ENV STOP_CLUSTER_SCRIPT_PATH=/opt/stop-cluster.sh
 ENV START_CLUSTER_SCRIPT_PATH=/opt/start-cluster.sh
 
@@ -52,6 +53,8 @@ RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
     helm pull bitnami/spark --version=6.3.9 && \
     tar -zxf spark*.tgz && \
     chmod -R 777 /opt/spark
+
+
   
 # install tensorflow and torch
 # RUN mamba install cudatoolkit=11.2 cudnn && \
