@@ -52,6 +52,8 @@ RUN pip install notebook pyspark -v
 
 # install jupyter-server-proxy
 RUN pip install jupyter-server-proxy databricks koalas -v
+
+COPY start-notebook.sh /usr/local/bin
   
 # install tensorflow and torch
 # RUN mamba install cudatoolkit=11.2 cudnn && \
