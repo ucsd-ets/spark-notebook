@@ -53,7 +53,7 @@ RUN pip install jupyter-server-proxy databricks koalas -v
 
 COPY start-notebook.sh /usr/local/bin
 COPY start.sh /usr/local/bin
-COPY start-singleuser.sh
+COPY start-singleuser.sh /usr/local/bin
 
 RUN chmod 777 /usr/local/bin/start-notebook.sh /usr/local/bin/start.sh /usr/local/bin/start-singleuser.sh
   
