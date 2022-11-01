@@ -1,4 +1,4 @@
-FROM ucsdets/datahub-base-notebook:2022.3-stable
+FROM jupyter/scipy-notebook:3.7
 
 USER root
 
@@ -72,24 +72,24 @@ RUN chmod 777 /spark-master /spark-worker  /opt/*.sh \
     /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
     /opt/sanity_check.ipynb && \
     mkdir /opt/spark/work && \
-    chmod -R 777 /opt /opt/spark/work
+    chmod -R 777 /opt/spark
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
 RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark==2.4.4 -v
 
 # install jupyter-server-proxy
-RUN pip install jupyter-server-proxy databricks koalas -v
+# RUN pip install jupyter-server-proxy databricks koalas -v
   
 # install tensorflow and torch
-RUN mamba install cudatoolkit=11.2 cudnn && \
-    pip install tensorflow==2.6
+# RUN mamba install cudatoolkit=11.2 cudnn && \
+#     pip install tensorflow==2.6
 
-ARG TORCH_VER="1.7.1+cu101"        
-ARG TORCH_VIS_VER="0.8.2+cu101"        
-ARG TORCH_AUD_VER="0.7.2"        
+# ARG TORCH_VER="1.7.1+cu101"        
+# ARG TORCH_VIS_VER="0.8.2+cu101"        
+# ARG TORCH_AUD_VER="0.7.2"        
         
-RUN pip install torch==${TORCH_VER} torchvision==${TORCH_VIS_VER} torchaudio==${TORCH_AUD_VER} \  
-    -f https://download.pytorch.org/whl/torch_stable.html && \        
-    fix-permissions $CONDA_DIR && \        
-    fix-permissions /home/$NB_USER
+# RUN pip install torch==${TORCH_VER} torchvision==${TORCH_VIS_VER} torchaudio==${TORCH_AUD_VER} \  
+#     -f https://download.pytorch.org/whl/torch_stable.html && \        
+#     fix-permissions $CONDA_DIR && \        
+#     fix-permissions /home/$NB_USER
