@@ -49,7 +49,7 @@ RUN chmod 777 /spark-master /spark-worker  /opt/*.sh \
 RUN pip install notebook pyspark -v
 
 # install jupyter-server-proxy
-RUN pip install jupyter-server-proxy databricks koalas -v
+RUN pip install jupyter-server-proxy jupyterhub databricks koalas -v
 
 COPY start-notebook.sh /usr/local/bin
 COPY start.sh /usr/local/bin
