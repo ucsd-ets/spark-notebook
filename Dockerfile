@@ -79,7 +79,7 @@ RUN chmod 777 /spark-master /spark-worker  /opt/*.sh \
 RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark==2.4.4 -v
 
 # install jupyter-server-proxy
-# RUN pip install jupyter-server-proxy databricks koalas -v
+RUN pip install jupyter-server-proxy -v
   
 # install tensorflow and torch
 # RUN mamba install cudatoolkit=11.2 cudnn && \
