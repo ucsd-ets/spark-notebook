@@ -36,7 +36,7 @@ RUN mkdir -p /opt && \
     cd /opt && \
     curl http://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz | \
         tar -zx && \
-    ln -s spark-${SPARK_VERSION}-bin-hadoop2.7 spark && \
+    ln -s spark-${SPARK_VERSION}-bin-hadoop2.7 spark && \:
     echo Spark ${SPARK_VERSION} installed in /opt
 
 # download and install kubectl
@@ -71,7 +71,7 @@ ADD sanity_check.ipynb /opt/sanity_check.ipynb
 RUN chmod 777 /spark-master /spark-worker  /opt/*.sh \
     /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
     /opt/sanity_check.ipynb && \
-    chmod -R 777 /opt/PA2
+    chmod -R 777 /opt /opt
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
