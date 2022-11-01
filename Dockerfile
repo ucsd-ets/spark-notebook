@@ -8,9 +8,10 @@ RUN apt-get update && \
     add-apt-repository ppa:deadsnakes/ppa -y
 # RUN apt-get update
 RUN apt-get install -y curl openssh-client vim && \
-    apt-get install unzip
+    apt-get install unzip -y
 
 # download and install kubectl
+ENV KUBECTL_VERSION=v1.25.0
 WORKDIR /opt 
 RUN curl -LO https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
     install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
