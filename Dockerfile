@@ -75,7 +75,8 @@ RUN chmod 777 /spark-master /spark-worker  /opt/*.sh \
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
-RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark -v
+RUN PYSPARK_HADOOP_VERSION=3 pip install pyspark==2.4.4
+ -v
 
 # install jupyter-server-proxy
 RUN pip install jupyter-server-proxy databricks koalas -v
