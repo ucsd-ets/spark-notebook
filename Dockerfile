@@ -59,6 +59,8 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
     bash /opt/miniconda.sh -b -p /opt/miniconda
 
 ENV PATH=/opt/miniconda/bin:$PATH
+ENV SHELL=/bin/bash
+
 
 # install tensorflow and torch
 # RUN conda install -c anaconda cudatoolkit=11.2 cudnn -y && \
