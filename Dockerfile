@@ -6,8 +6,7 @@ RUN apt-get update && \
     apt-get install software-properties-common -y && \
     add-apt-repository ppa:deadsnakes/ppa -y
 # RUN apt-get update
-RUN apt-get install default-jre -y && \
-    apt-get install default-jdk -y && \
+RUN apt-get install openjdk-8-jdk -y && \
     apt-get install -y curl openssh-client vim && \
     apt-get install unzip
 
