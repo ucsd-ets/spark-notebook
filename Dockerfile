@@ -71,7 +71,8 @@ ADD sanity_check.ipynb /opt/sanity_check.ipynb
 RUN chmod 777 /spark-master /spark-worker  /opt/*.sh \
     /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
     /opt/sanity_check.ipynb && \
-    chmod -R 777 /opt /opt
+    mkdir /opt/spark/work && \
+    chmod -R 777 /opt /opt/spark/work
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
