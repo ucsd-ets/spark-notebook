@@ -53,10 +53,12 @@ RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
     tar -zxf spark*.tgz && \
     chmod -R 777 /opt/spark
 
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
-    bash ~/miniconda.sh -b -p $HOME/miniconda
 
-  
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
+    bash /opt/miniconda.sh -b -p /opt/miniconda
+
+ENV PATH=/opt/miniconda/bin:$PATH
+
 # install tensorflow and torch
 RUN conda install cudatoolkit=11.2 cudnn -y && \
     pip install tensorflow==2.6
