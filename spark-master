@@ -11,3 +11,4 @@ cd /home
 #pyspark --driver-memory 4G --executor-memory 6G --executor-cores 2
 
 jupyter notebook --NotebookApp.token=$JUPYTER_TOKEN --NotebookApp.password=$JUPYTER_TOKEN --ip 0.0.0.0 --allow-root
+

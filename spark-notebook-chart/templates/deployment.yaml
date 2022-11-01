@@ -4,6 +4,17 @@ kind: ConfigMap
 metadata:
   name: passwd
 data:
+  spark-defaults.conf: |
+    spark.master spark://spark-master:7077
+    spark.driver.extraLibraryPath /opt/hadoop/lib/native
+    spark.app.id KubernetesSpark
+    spark.driver.port 20002
+    spark.executor.port 40002
+    spark.blockManager.port 50002
+    spark.fileserver.port 60002
+    spark.broadcast.port 60003
+    spark.replClassServer.port 60004
+    spark.port.maxRetries 1
   passwd: |
     bin:x:2:2:bin:/bin:/usr/sbin/nologin
     sys:x:3:3:sys:/dev:/usr/sbin/nologin
@@ -60,20 +71,22 @@ spec:
           value: {{ .Values.username }}
         - name: USER
           value: {{ .Values.username }}
+        - name: SPARK_WORKER_PORT
+          value: "20002"
         - name: LOGNAME
           value: {{ .Values.username }}
         # command: ["/bin/sh","-c"]
         args: [
               "/bin/sh",
               "-c",
-              "/opt/spark-3.3.0-bin-hadoop3/sbin/start-worker.sh spark://master:7077; sleep inf"
+              "unset SPARK_MASTER_PORT; /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077 --webui-port 8081 --cores 2 --memory 8G"
         ]
         resources:
           requests:
-            memory: "16Gi"
+            memory: "8Gi"
             cpu: "2000m"
           limits:
-            memory: "16Gi"
+            memory: "8Gi"
             cpu: "2000m"
         ports: 
         {{- range .Values.workers.ports}}
@@ -85,69 +98,9 @@ spec:
             name: config-volume
           - mountPath: /home/{{ .Values.username }}
             name: home
-      volumes:
-        - name: home
-          persistentVolumeClaim:
-            claimName: home
-        - name: config-volume
-          configMap:
-            name: passwd
-            defaultMode: 0777
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: master
-  labels:
-    app: master
-    {{- include "spark-notebook-chart.labels" . | nindent 4 }}
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: master
-      {{- include "spark-notebook-chart.selectorLabels" . | nindent 6 }}
-  template:
-    metadata:
-      labels:
-        app: master
-        {{- include "spark-notebook-chart.selectorLabels" . | nindent 8 }}
-    spec:
-      securityContext:
-        runAsUser: {{ .Values.uid }}
-      containers:
-      - name: master
-        image: ghcr.io/ucsd-ets/spark-notebook:latest
-        env:
-        - name: SPARK_USER
-          value: {{ .Values.username }}
-        - name: USER
-          value: {{ .Values.username }}
-        - name: LOGNAME
-          value: {{ .Values.username }}
-        # command: ["/bin/sh","-c"]
-        args: [
-              "/bin/sh",
-              "-c",
-              "/opt/spark-3.3.0-bin-hadoop3/sbin/start-master.sh; sleep inf"
-        ]
-        resources:
-          requests:
-            memory: "16Gi"
-            cpu: "2000m"
-          limits:
-            memory: "16Gi"
-            cpu: "2000m"
-        ports: 
-        {{- range .Values.workers.ports}}
-        - containerPort: {{ .portNumber }}
-        {{- end }} 
-        volumeMounts:
-          - mountPath: /etc/passwd
-            subPath: passwd
+          - mountPath: /opt/spark/conf/spark-defaults.conf
             name: config-volume
-          - mountPath: /home/{{ .Values.username }}
-            name: home
+            subPath: spark-defaults.conf
       volumes:
         - name: home
           persistentVolumeClaim:
