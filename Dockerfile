@@ -52,7 +52,10 @@ RUN pip install notebook pyspark -v
 RUN pip install jupyter-server-proxy databricks koalas -v
 
 COPY start-notebook.sh /usr/local/bin
-RUN chmod 777 /usr/local/bin/start-notebook.sh
+COPY start.sh /usr/local/bin
+COPY start-singleuser.sh
+
+RUN chmod 777 /usr/local/bin/start-notebook.sh /usr/local/bin/start.sh /usr/local/bin/start-singleuser.sh
   
 # install tensorflow and torch
 # RUN mamba install cudatoolkit=11.2 cudnn && \
