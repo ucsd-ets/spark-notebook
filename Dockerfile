@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook:3.7
+FROM jupyter/scipy-notebook:python-3.7
 
 USER root
 
