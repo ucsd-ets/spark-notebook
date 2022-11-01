@@ -60,8 +60,8 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
 ENV PATH=/opt/miniconda/bin:$PATH
 
 # install tensorflow and torch
-RUN conda install -c anaconda cudatoolkit=11.2 cudnn -y && \
-    pip install tensorflow==2.6
+# RUN conda install -c anaconda cudatoolkit=11.2 cudnn -y && \
+#     pip install tensorflow==2.6
 
 # ARG TORCH_VER="1.7.1+cu101"        
 # ARG TORCH_VIS_VER="0.8.2+cu101"        
