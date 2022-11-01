@@ -21,25 +21,22 @@ ENV PATH=$PATH:/opt/spark/bin
 ENV SPARK_CHART_NAME=spark-notebook-chart
 ENV SPARK_CHART_PATH=/opt/$SPARK_CHART_NAME
 
-# If the <docker build> throws errors on RUN curl command, it's most likely
-#         the Hadoop and Spark version are out-dated or incompatible.
-# Check https://spark.apache.org/downloads.html for latest version and compatibility.
-# Note the 'bin-hadoop3' at the end of RUN curl of spark. This should be changed manually.
+ENV PATH $PATH:/opt/spark/bin
 
 # download and install hadoop
-WORKDIR /opt 
-RUN curl http://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz | \
-        tar -zx hadoop-${HADOOP_VERSION}/lib/native 
-RUN ln -s hadoop-${HADOOP_VERSION} hadoop && \
+RUN mkdir -p /opt && \
+    cd /opt && \
+    curl http://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz | \
+        tar -zx hadoop-${HADOOP_VERSION}/lib/native && \
+    ln -s hadoop-${HADOOP_VERSION} hadoop && \
     echo Hadoop ${HADOOP_VERSION} native libraries installed in /opt/hadoop/lib/native
 
 # download and install spark
-WORKDIR /opt 
-RUN curl http://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop3.tgz | \
-        tar -zx
-RUN chmod -R 777 spark-${SPARK_VERSION}-bin-hadoop3
-RUN ln -s spark-${SPARK_VERSION}-bin-hadoop3 spark && \
-    chmod -R 777 spark-${SPARK_VERSION}-bin-hadoop3 && \
+RUN mkdir -p /opt && \
+    cd /opt && \
+    curl http://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz | \
+        tar -zx && \
+    ln -s spark-${SPARK_VERSION}-bin-hadoop2.7 spark && \
     echo Spark ${SPARK_VERSION} installed in /opt
 
 # download and install kubectl
