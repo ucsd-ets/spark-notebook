@@ -25,36 +25,33 @@ RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/s
     rm get_helm.sh
 
 # add scripts and update spark default config
-ADD spark-master spark-worker /
-ADD spark-defaults.conf /opt/spark/conf/spark-defaults.conf
 # ADD spark-env.sh /opt/spark/conf/spark-env.sh
 ADD jupyter_config.py /etc/jupyter/jupyter_config.py
-ADD spark-notebook-chart/ /opt/spark-notebook-chart
 ADD start-cluster.sh /opt/start-cluster.sh
 ADD stop-cluster.sh /opt/stop-cluster.sh
+ADD port-forward.sh /opt/port-forward.sh
+
+RUN chmod 777  /opt/*.sh
 
 ENV STOP_CLUSTER_SCRIPT_PATH=/opt/stop-cluster.sh
-
-ADD PA2.zip /opt/PA2.zip
-RUN unzip PA2.zip && \
-    rm PA2.zip
-ADD sanity_check.ipynb /opt/sanity_check.ipynb 
-
-RUN chmod 777 /spark-master /spark-worker  /opt/*.sh \
-    /opt/spark/conf/spark-defaults.conf /opt/spark-notebook-chart \
-    /opt/sanity_check.ipynb && \
-    chmod -R 777 /opt/PA2
+ENV START_CLUSTER_SCRIPT_PATH=/opt/start-cluster.sh
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
 RUN pip3 install notebook pyspark jupyter-server-proxy jupyterhub databricks koalas -v
 
-
+# jupyter compatibility
 COPY start-notebook.sh /usr/local/bin
 COPY start.sh /usr/local/bin
 COPY start-singleuser.sh /usr/local/bin
 
 RUN chmod 777 /usr/local/bin/start-notebook.sh /usr/local/bin/start.sh /usr/local/bin/start-singleuser.sh
+
+RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
+    helm repo update && \
+    helm pull bitnami/spark --version=6.3.9 && \
+    tar -zxf spark*.tgz && \
+    chmod -R 777 /opt/spark
   
 # install tensorflow and torch
 # RUN mamba install cudatoolkit=11.2 cudnn && \

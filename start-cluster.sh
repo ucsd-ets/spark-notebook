@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# install helm chart
-helm install $SPARK_CHART_NAME $SPARK_CHART_PATH \
---set masterHostName=$(hostname) \
---set uid=$(id -u) \
---set username=$USER
+helm install $SPARK_CHART_NAME /opt/spark \
+    --set serviceAccount.name=default \
+    --set serviceAccount.create=false \
+    --set master.podSecurityContext.runAsUser=$UID \
+    --set master.containerSecurityContext.runAsUser=$UID \
+    --set worker.podSecurityContext.runAsUser=$UID \
+    --set worker.containerSecurityContext.runAsUser=$UID \
+    --set master.podSecurityContext.runAsGroup=0 \
+    --set master.podSecurityContext.fsGroup=0 \
+    --set worker.podSecurityContext.runAsGroup=0 \
+    --set worker.podSecurityContext.fsGroup=0
