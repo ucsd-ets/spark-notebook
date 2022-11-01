@@ -29,8 +29,9 @@ ADD jupyter_config.py /etc/jupyter/jupyter_config.py
 ADD start-cluster.sh /opt/start-cluster.sh
 ADD stop-cluster.sh /opt/stop-cluster.sh
 ADD port-forward.sh /opt/port-forward.sh
+ADD sanity_check.ipynb /opt/sanity_check.ipynb
 
-RUN chmod 777  /opt/*.sh
+RUN chmod 777  /opt/*.sh /opt/*.ipynb
 
 ENV SPARK_CHART_NAME=spark
 ENV STOP_CLUSTER_SCRIPT_PATH=/opt/stop-cluster.sh
