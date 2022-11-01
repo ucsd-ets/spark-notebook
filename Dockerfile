@@ -7,8 +7,7 @@ RUN apt-get update && \
     apt-get install software-properties-common -y && \
     add-apt-repository ppa:deadsnakes/ppa -y
 # RUN apt-get update
-RUN apt-get install -y curl openssh-client vim && \
-    apt-get install unzip -y
+RUN apt-get install -y curl openssh-client vim unzip wget
 
 # download and install kubectl
 ENV KUBECTL_VERSION=v1.25.0
@@ -39,7 +38,7 @@ ENV START_CLUSTER_SCRIPT_PATH=/opt/start-cluster.sh
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
-RUN pip3 install notebook pyspark jupyter-server-proxy jupyterhub databricks koalas -v
+RUN pip3 install notebook pyspark jupyter-server-proxy jupyterhub databricks koalas pandas -v
 
 # jupyter compatibility
 COPY start-notebook.sh /usr/local/bin
@@ -54,7 +53,10 @@ RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
     tar -zxf spark*.tgz && \
     chmod -R 777 /opt/spark
 
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+    bash ~/miniconda.sh -b -p $HOME/miniconda
 
+RUN conda install mamba -n base -c conda-forge
   
 # install tensorflow and torch
 # RUN mamba install cudatoolkit=11.2 cudnn && \
