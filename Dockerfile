@@ -56,7 +56,7 @@ RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
     bash ~/miniconda.sh -b -p $HOME/miniconda
 
-RUN conda install mamba -n base -c conda-forge
+RUN conda install mamba -n base -c conda-forge -y
   
 # install tensorflow and torch
 # RUN mamba install cudatoolkit=11.2 cudnn && \
