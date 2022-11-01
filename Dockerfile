@@ -36,7 +36,7 @@ RUN mkdir -p /opt && \
     cd /opt && \
     curl http://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz | \
         tar -zx && \
-    ln -s spark-${SPARK_VERSION}-bin-hadoop2.7 spark && \:
+    ln -s spark-${SPARK_VERSION}-bin-hadoop2.7 spark && \
     echo Spark ${SPARK_VERSION} installed in /opt
 
 # download and install kubectl
