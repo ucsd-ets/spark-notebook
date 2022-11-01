@@ -46,10 +46,8 @@ RUN chmod 777 /spark-master /spark-worker  /opt/*.sh \
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
-RUN pip install notebook pyspark -v
+RUN pip3 install notebook pyspark jupyter-server-proxy jupyterhub databricks koalas -v
 
-# install jupyter-server-proxy
-RUN pip install jupyter-server-proxy jupyterhub databricks koalas -v
 
 COPY start-notebook.sh /usr/local/bin
 COPY start.sh /usr/local/bin
