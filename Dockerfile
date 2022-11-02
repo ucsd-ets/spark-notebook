@@ -38,7 +38,7 @@ ENV SHELL=/bin/bash
 
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
-RUN pip3 install notebook pyspark jupyter-server-proxy jupyterhub databricks koalas pandas -v
+RUN pip3 install notebook pyspark jupyter-server-proxy jupyterhub==1.5.0 databricks koalas pandas -v
 
 # jupyter compatibility
 COPY start-notebook.sh /usr/local/bin
