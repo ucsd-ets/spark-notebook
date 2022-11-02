@@ -55,10 +55,10 @@ RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
     chmod -R 777 /opt/spark
 
 
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
-    bash /opt/miniconda.sh -b -p /opt/miniconda
+# RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
+#     bash /opt/miniconda.sh -b -p /opt/miniconda
 
-ENV PATH=/opt/miniconda/bin:$PATH
+# ENV PATH=/opt/miniconda/bin:$PATH
 ENV SHELL=/bin/bash
 
 
