@@ -53,6 +53,9 @@ RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
     tar -zxf spark*.tgz && \
     chmod -R 777 /opt/spark
 
+USER 1000
+
+ENV PATH=/opt/bitnami/python/bin:/opt/bitnami/java/bin:/opt/bitnami/spark/bin:/opt/bitnami/spark/sbin:/opt/bitnami/common/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
 #     bash /opt/miniconda.sh -b -p /opt/miniconda
