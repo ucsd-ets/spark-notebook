@@ -37,6 +37,8 @@ ENV SPARK_CHART_NAME=spark
 ENV STOP_CLUSTER_SCRIPT_PATH=/opt/stop-cluster.sh
 ENV START_CLUSTER_SCRIPT_PATH=/opt/start-cluster.sh
 
+ENV SHELL=/bin/bash
+
 # install pyspark
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
 RUN pip3 install notebook pyspark jupyter-server-proxy jupyterhub databricks koalas pandas -v
@@ -59,8 +61,6 @@ RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
 #     bash /opt/miniconda.sh -b -p /opt/miniconda
 
 # ENV PATH=/opt/miniconda/bin:$PATH
-ENV SHELL=/bin/bash
-
 
 # install tensorflow and torch
 # RUN conda install -c anaconda cudatoolkit=11.2 cudnn -y && \
