@@ -4,10 +4,7 @@ FROM docker.io/bitnami/spark:3.3.1-debian-11-r1
 USER root
 
 RUN apt-get update && \
-    apt-get install software-properties-common -y && \
-    add-apt-repository ppa:deadsnakes/ppa -y
-# RUN apt-get update
-RUN apt-get install -y curl openssh-client vim unzip wget
+    apt-get install curl openssh-client vim unzip wget -y
 
 # download and install kubectl
 ENV KUBECTL_VERSION=v1.25.0
