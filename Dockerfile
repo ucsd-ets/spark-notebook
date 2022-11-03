@@ -53,7 +53,7 @@ RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
     tar -zxf spark*.tgz && \
     chmod -R 777 /opt/spark
 
-COPY bashrc /etc/bashrc
+COPY bash.bashrc /etc/bash.bashrc
 
 USER 1000
 
