@@ -39,4 +39,5 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set-json='master.extraVolumeMounts[1]={"name":"course-workspace","mountPath":"/home/${USER}/public"}' \
     --set master.extraVolumeMounts[1].mountPath=/home/$USER/public \
     --set master.extraVolumeMounts[1].subPath=public \
-    --set-json='master.extraVolumeMounts[2]={"name":"home","mountPath":"/home/${USER}/private"}'
+    --set-json='master.extraVolumeMounts[2]={"name":"home","mountPath":"/home/${USER}/private"}' \
+    --set master.extraVolumeMounts[2].mountPath=/home/$USER/private
