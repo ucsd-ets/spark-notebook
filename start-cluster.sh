@@ -14,8 +14,29 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set worker.resources.limits.memory=20G \
     --set worker.resources.limits.memory=20G \
     --set worker.resources.limits.cpu=2 \
-    --set worker.resources.requests.cpu=1 \
-    --set master.resources.limits.cpu=1 \
-    --set master.resources.requests.cpu=0.5 \
+    --set worker.resources.requests.cpu=2 \
+    --set master.resources.limits.cpu=2 \
+    --set master.resources.requests.cpu=2 \
     --set master.resources.limits.memory=8G \
-    --set master.resources.requests.memory=8G
+    --set master.resources.requests.memory=8G \
+    --set master.memoryLimit=8G \
+    --set worker.memoryLimit=20G \
+    --set-json='worker.extraVolumes[0]={"name":"course-workspace","nfs":{"server":"its-dsmlp-fs04.ucsd.edu","path":"/export/workspaces/DSC102_FA22_A00"}}' \
+    --set-json='worker.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
+    --set-json='worker.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
+    --set worker.extraVolumeMounts[0].mountPath=/home/$USER \
+    --set worker.extraVolumeMounts[0].subPath=home/$USER \
+    --set-json='worker.extraVolumeMounts[1]={"name":"course-workspace","mountPath":"/home/${USER}/public"}' \
+    --set worker.extraVolumeMounts[1].mountPath=/home/$USER/public \
+    --set worker.extraVolumeMounts[1].subPath=public \
+    --set-json='worker.extraVolumeMounts[2]={"name":"home","mountPath":"/home/${USER}/private"}' \
+    --set worker.extraVolumeMounts[2].mountPath=/home/$USER/private \
+    --set-json='master.extraVolumes[0]={"name":"course-workspace","nfs":{"server":"its-dsmlp-fs04.ucsd.edu","path":"/export/workspaces/DSC102_FA22_A00"}}' \
+    --set-json='master.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
+    --set-json='master.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
+    --set master.extraVolumeMounts[0].mountPath=/home/$USER \
+    --set master.extraVolumeMounts[0].subPath=home/$USER \
+    --set-json='master.extraVolumeMounts[1]={"name":"course-workspace","mountPath":"/home/${USER}/public"}' \
+    --set master.extraVolumeMounts[1].mountPath=/home/$USER/public \
+    --set master.extraVolumeMounts[1].subPath=public \
+    --set-json='master.extraVolumeMounts[2]={"name":"home","mountPath":"/home/${USER}/private"}'
