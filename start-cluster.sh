@@ -12,10 +12,10 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set worker.podSecurityContext.runAsGroup=0 \
     --set worker.podSecurityContext.fsGroup=0 \
     --set worker.resources.limits.memory=20G \
-    --set worker.resources.limits.memory=10G \
+    --set worker.resources.limits.memory=20G \
     --set worker.resources.limits.cpu=2 \
     --set worker.resources.requests.cpu=1 \
     --set master.resources.limits.cpu=1 \
     --set master.resources.requests.cpu=0.5 \
     --set master.resources.limits.memory=8G \
-    --set master.resources.requests.memory=4G
+    --set master.resources.requests.memory=8G
