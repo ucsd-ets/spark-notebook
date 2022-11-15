@@ -23,6 +23,14 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./Dockerfile
+            image: ghcr.io/ucsd-ets/spark-notebook
+          - dockerfile: ./spark-image/Dockerfile
+            image: ghcr.io/ucsd-ets/spark-node
     permissions:
       contents: read
       packages: write
