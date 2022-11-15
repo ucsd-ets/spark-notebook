@@ -1,6 +1,10 @@
 #!/bin/bash
 
 helm install $SPARK_CHART_NAME /opt/spark \
+    --set image.registry=ghcr.io \
+    --set image.repository=ucsd-ets/spark-node \
+    --set image.tag=fa22-3 \
+    --set image.pullPolicy=Always \
     --set serviceAccount.name=default \
     --set serviceAccount.create=false \
     --set master.podSecurityContext.runAsUser=$UID \
