@@ -22,10 +22,10 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set worker.resources.requests.cpu=2 \
     --set master.resources.limits.cpu=2 \
     --set master.resources.requests.cpu=2 \
-    --set master.resources.limits.memory=4G \
-    --set master.resources.requests.memory=4G \
-    --set master.memoryLimit=4G \
-    --set worker.memoryLimit=18G \
+    --set master.resources.limits.memory=8G \
+    --set master.resources.requests.memory=8G \
+    --set master.memoryLimit=8G \
+    --set worker.memoryLimit=20G \
     --set-json='worker.extraVolumes[0]={"name":"course-workspace","nfs":{"server":"its-dsmlp-fs04.ucsd.edu","path":"/export/workspaces/DSC102_FA22_A00"}}' \
     --set-json='worker.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
     --set-json='worker.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
