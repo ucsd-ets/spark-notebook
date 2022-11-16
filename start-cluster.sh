@@ -21,8 +21,8 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set worker.coreLimit=2 \
     --set worker.resources.limits.cpu=2 \
     --set worker.resources.requests.cpu=2 \
-    --set master.resources.limits.cpu=2 \
-    --set master.resources.requests.cpu=2 \
+    --set master.resources.limits.cpu=1 \
+    --set master.resources.requests.cpu=1 \
     --set master.resources.limits.memory=5G \
     --set master.resources.requests.memory=5G \
     --set master.memoryLimit=5G \
