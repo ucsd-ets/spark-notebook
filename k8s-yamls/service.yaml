@@ -1,0 +1,32 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: spark-master
+spec:
+  ports:
+    - name: webui
+      port: 8080
+      targetPort: 8080
+    - name: spark
+      port: 7077
+      targetPort: 7077
+    - name: sparkui
+      port: 4040
+      targetPort: 4040
+    - name: driverport
+      port: 20002
+      targetPort: 20002
+    - name: blockmgrport
+      port: 50002
+      targetPort: 50002
+    - name: fileserverport
+      port: 60002
+      targetPort: 60002
+    - name: broadcastport
+      port: 60003
+      targetPort: 60003
+    - name: replicaport
+      port: 60004
+      targetPort: 60004
+  selector:
+    dsmlp/app: spark
