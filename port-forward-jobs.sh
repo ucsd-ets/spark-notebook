@@ -1,3 +1,3 @@
 #!/bin/bash
 
-kubectl port-forward svc/spark-master-svc 4040:4040
+kubectl port-forward svc/spark-headless 4040:4040
