@@ -26,6 +26,8 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set master.resources.requests.memory=8G \
     --set master.memoryLimit=8G \
     --set worker.memoryLimit=20G \
+    --set-json 'master.extraContainerPorts[0]={"name": "jobs", "containerPort": 4040}' \
+    --set-json 'service.extraPorts[0]={"name": "jobs", "port": 4040, "targetPort": 4040}' \
     --set-json='worker.extraVolumes[0]={"name":"course-workspace","nfs":{"server":"its-dsmlp-fs04.ucsd.edu","path":"/export/workspaces/DSC102_FA22_A00"}}' \
     --set-json='worker.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
     --set-json='worker.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
