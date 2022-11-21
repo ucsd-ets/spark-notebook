@@ -29,7 +29,7 @@ ADD port-forward.sh /opt/port-forward.sh
 ADD port-forward-jobs.sh /opt/port-forward-jobs.sh
 ADD sanity_check.ipynb /opt/sanity_check.ipynb
 
-RUN chmod 777  /opt/*.sh /opt/*.ipynb
+RUN chmod 777  /opt/*.sh /opt/*.ipynb /etc/jupyter/jupyter_config.py
 
 ENV SPARK_CHART_NAME=spark
 ENV STOP_CLUSTER_SCRIPT_PATH=/opt/stop-cluster.sh
