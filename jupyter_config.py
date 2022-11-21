@@ -8,7 +8,7 @@ c.ServerProxy.servers = {
         'command': ['redir', '--lport={port}', '--cport=4040'],
         'absolute_url': False,
         'timeout': 30,
-        'port': 7077
+        'port': 7078
     }
 }
 
