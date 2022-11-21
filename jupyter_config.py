@@ -6,9 +6,9 @@ c.ServerProxy.servers = {
     },
     'jobs-ui': {
         'command': ['redir', '--lport={port}', '--cport=4040'],
-        'absolute_url': False,
+        'absolute_url': True,
         'timeout': 30,
-        'port': 7078
+        'port': 7078,
     }
 }
 
