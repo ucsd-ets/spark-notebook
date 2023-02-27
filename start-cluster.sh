@@ -26,7 +26,7 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set master.resources.requests.memory=8G \
     --set master.memoryLimit=8G \
     --set worker.memoryLimit=20G \
-    --set-json='worker.extraVolumes[0]={"name":"course-workspace","nfs":{"server":"its-dsmlp-fs04.ucsd.edu","path":"/export/workspaces/DSC102_FA22_A00"}}' \
+    --set-json='worker.extraVolumes[0]={"name":"course-workspace","nfs":{"server":"its-dsmlp-fs04.ucsd.edu","path":"/export/workspaces/DSC208R_WI23_A00"}}' \
     --set-json='worker.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
     --set-json='worker.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
     --set worker.extraVolumeMounts[0].mountPath=/home/$USER \
@@ -36,7 +36,7 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set worker.extraVolumeMounts[1].subPath=public \
     --set-json='worker.extraVolumeMounts[2]={"name":"home","mountPath":"/home/${USER}/private"}' \
     --set worker.extraVolumeMounts[2].mountPath=/home/$USER/private \
-    --set-json='master.extraVolumes[0]={"name":"course-workspace","nfs":{"server":"its-dsmlp-fs04.ucsd.edu","path":"/export/workspaces/DSC102_FA22_A00"}}' \
+    --set-json='master.extraVolumes[0]={"name":"course-workspace","nfs":{"server":"its-dsmlp-fs04.ucsd.edu","path":"/export/workspaces/DSC208R_WI23_A00"}}' \
     --set-json='master.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
     --set-json='master.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
     --set master.extraVolumeMounts[0].mountPath=/home/$USER \
