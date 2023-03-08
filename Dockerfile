@@ -26,6 +26,7 @@ ADD jupyter_config.py /etc/jupyter/jupyter_config.py
 ADD start-cluster.sh /opt/start-cluster.sh
 ADD stop-cluster.sh /opt/stop-cluster.sh
 ADD port-forward.sh /opt/port-forward.sh
+ADD connect-to-jobs-ui.sh /opt/connect-to-jobs-ui.sh
 ADD sanity_check.ipynb /opt/sanity_check.ipynb
 
 RUN chmod 777  /opt/*.sh /opt/*.ipynb
