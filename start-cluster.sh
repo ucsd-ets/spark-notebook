@@ -21,6 +21,7 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set master.podSecurityContext.fsGroup=0 \
     --set worker.podSecurityContext.runAsGroup=0 \
     --set worker.podSecurityContext.fsGroup=0 \
+    --set worker.resources.requests.memory=20G \
     --set worker.resources.limits.memory=20G \
     --set worker.coreLimit=2 \
     --set worker.resources.limits.cpu=2 \
@@ -30,7 +31,7 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set master.resources.limits.memory=8G \
     --set master.resources.requests.memory=8G \
     --set master.memoryLimit=8G \
-    --set worker.memoryLimit=20G \
+    --set worker.memoryLimit=18G \
     --set-json="worker.extraVolumes[0]={\"name\":\"course-workspace\",\"nfs\":{\"server\":\"${FILESYSTEM}\",\"path\":\"${WORKSPACE}\"}}" \
     --set-json='worker.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
     --set-json='worker.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
