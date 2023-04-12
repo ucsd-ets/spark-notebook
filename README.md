@@ -16,6 +16,7 @@ SPARK_CHART_NAME
 : Helm chart used to instantiate Spark cluster
 : Default =
 
+```
 SPARK_CLUSTER_IMAGE_REGISTRY
 : Default = ghcr.io
 SPARK_CLUSTER_IMAGE_REPO ucsd-ets/spark-node
@@ -49,4 +50,4 @@ SPARK_CLUSTER_RUNASGROUP
 SPARK_CLUSTER_FSGROUP 
 : Supplemental Unix group ID assigned to cluster nodes
 : Default value: 0
-
+```
