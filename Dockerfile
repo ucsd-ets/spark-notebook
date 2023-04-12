@@ -29,6 +29,11 @@ ADD port-forward.sh /opt/port-forward.sh
 ADD connect-to-jobs-ui.sh /opt/connect-to-jobs-ui.sh
 ADD sanity_check.ipynb /opt/sanity_check.ipynb
 
+# Spark cluster configuration can be modified via 
+#    spark-cluster-configuration-profile.sh (see README.md for defaults)
+RUN mkdir /etc/datahub-profile.d
+ADD spark-cluster-configuration-profile.sh /etc/datahub-profile.d
+
 RUN chmod 777  /opt/*.sh /opt/*.ipynb
 
 ENV SPARK_CHART_NAME=spark

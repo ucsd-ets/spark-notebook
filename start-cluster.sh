@@ -6,32 +6,32 @@ WORKSPACE=$(dirname $HOMEMOUNT)
 WORKSPACE=$(dirname $WORKSPACE)
 
 helm install $SPARK_CHART_NAME /opt/spark \
-    --set image.registry=ghcr.io \
-    --set image.repository=ucsd-ets/spark-node \
-    --set image.tag=fa22-3 \
+    --set image.registry=${SPARK_CLUSTER_IMAGE_REGISTRY:-ghcr.io} \
+    --set image.repository=${SPARK_CLUSTER_IMAGE_REPO:-ucsd-ets/spark-node} \
+    --set image.tag=${SPARK_CLUSTER_IMAGE_TAG:-fa22-3} \
     --set image.pullPolicy=Always \
     --set serviceAccount.name=default \
     --set serviceAccount.create=false \
     --set master.podSecurityContext.runAsUser=$UID \
     --set master.containerSecurityContext.runAsUser=$UID \
-    --set worker.replicaCount=3 \
+    --set worker.replicaCount=${SPARK_CLUSTER_REPLICAS:-3} \
     --set worker.podSecurityContext.runAsUser=$UID \
     --set worker.containerSecurityContext.runAsUser=$UID \
-    --set master.podSecurityContext.runAsGroup=0 \
-    --set master.podSecurityContext.fsGroup=0 \
-    --set worker.podSecurityContext.runAsGroup=0 \
-    --set worker.podSecurityContext.fsGroup=0 \
-    --set worker.resources.requests.memory=20G \
-    --set worker.resources.limits.memory=20G \
-    --set worker.coreLimit=2 \
-    --set worker.resources.limits.cpu=2 \
-    --set worker.resources.requests.cpu=2 \
-    --set master.resources.limits.cpu=2 \
-    --set master.resources.requests.cpu=2 \
-    --set master.resources.limits.memory=8G \
-    --set master.resources.requests.memory=8G \
-    --set master.memoryLimit=8G \
-    --set worker.memoryLimit=18G \
+    --set master.podSecurityContext.runAsGroup=${SPARK_CLUSTER_RUNASGROUP:-0} \
+    --set master.podSecurityContext.fsGroup=${SPARK_CLUSTER_FSGROUP:-0} \
+    --set worker.podSecurityContext.runAsGroup=${SPARK_CLUSTER_RUNASGROUP:-0} \
+    --set worker.podSecurityContext.fsGroup=${SPARK_CLUSTER_FSGROUP:-0} \
+    --set worker.resources.requests.memory=${SPARK_CLUSTER_WORKER_MEM:-20G} \
+    --set worker.resources.limits.memory=${SPARK_CLUSTER_WORKER_MEM:-20G} \
+    --set worker.coreLimit=${SPARK_CLUSTER_WORKER_CPU:-2} \
+    --set worker.resources.limits.cpu=${SPARK_CLUSTER_WORKER_CPU:-2} \
+    --set worker.resources.requests.cpu=${SPARK_CLUSTER_WORKER_CPU:-2} \
+    --set master.resources.limits.cpu=${SPARK_CLUSTER_MASTER_CPU:-2} \
+    --set master.resources.requests.cpu=${SPARK_CLUSTER_MASTER_CPU:-2} \
+    --set master.resources.limits.memory=${SPARK_CLUSTER_MASTER_MEM:-8G} \
+    --set master.resources.requests.memory=${SPARK_CLUSTER_MASTER_MEM:-8G} \
+    --set master.memoryLimit=${SPARK_CLUSTER_MASTER_MEM:-8G} \
+    --set worker.memoryLimit=${SPARK_CLUSTER_WORKER_APP_MEM:-18G} \
     --set-json="worker.extraVolumes[0]={\"name\":\"course-workspace\",\"nfs\":{\"server\":\"${FILESYSTEM}\",\"path\":\"${WORKSPACE}\"}}" \
     --set-json='worker.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
     --set-json='worker.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
