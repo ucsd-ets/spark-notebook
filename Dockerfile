@@ -41,6 +41,12 @@ ENV SHELL=/bin/bash
 # https://spark.apache.org/docs/latest/api/python/getting_started/install.html
 RUN pip3 install notebook==6.4.0 pyspark jupyter-server-proxy jupyterhub==1.5.0 jupyter databricks==0.2 koalas==1.8.2 pandas nbgrader==0.8.1 -v
 
+RUN jupyter nbextension install --symlink --sys-prefix --py nbgrader && \
+  jupyter nbextension enable --sys-prefix --py nbgrader && \
+  jupyter serverextension enable --sys-prefix --py nbgrader && \
+  jupyter labextension enable --level=system nbgrader && \
+  jupyter server extension enable --system --py nbgrader
+
 # jupyter compatibility
 COPY start-notebook.sh /usr/local/bin
 COPY start.sh /usr/local/bin
