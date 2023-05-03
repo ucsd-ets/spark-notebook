@@ -69,7 +69,7 @@ COPY bash.bashrc /etc/bash.bashrc
 
 RUN chmod -R 777 /opt/bitnami/spark/tmp /opt/bitnami/spark/conf
 
-USER 1000
+RUN pip install scikit-learn
 
 # RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
 #     bash /opt/miniconda.sh -b -p /opt/miniconda
@@ -88,3 +88,7 @@ USER 1000
 #     -f https://download.pytorch.org/whl/torch_stable.html && \        
 #     fix-permissions $CONDA_DIR && \        
 #     fix-permissions /home/$NB_USER
+
+USER 1000
+
+
