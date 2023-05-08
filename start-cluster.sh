@@ -34,7 +34,7 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set worker.memoryLimit=${SPARK_CLUSTER_WORKER_APP_MEM:-18G} \
     --set-json="worker.extraVolumes[0]={\"name\":\"course-workspace\",\"nfs\":{\"server\":\"${FILESYSTEM}\",\"path\":\"${WORKSPACE}\"}}" \
     --set-json='worker.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
-    --set-json='worker.extraVolumes[2]={"name":"datasets","persistentVolumeClaim":{"claimName":"datasets"}}' \
+    --set-json='worker.extraVolumes[2]={"name":"datasets","persistentVolumeClaim":{"claimName":"dsmlp-datasets"}}' \
     --set-json='worker.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
     --set worker.extraVolumeMounts[0].mountPath=/home/$USER \
     --set worker.extraVolumeMounts[0].subPath=home/$USER \
