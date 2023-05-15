@@ -46,7 +46,7 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set-json='worker.extraVolumeMounts[3]={"name":"datasets","mountPath":"/datasets"}' \
     --set-json="master.extraVolumes[0]={\"name\":\"course-workspace\",\"nfs\":{\"server\":\"${FILESYSTEM}\",\"path\":\"${WORKSPACE}\"}}" \
     --set-json='master.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
-    --set-json='master.extraVolumes[2]={"name":"home","persistentVolumeClaim":{"claimName":"dsmlp-datasets"}}' \
+    --set-json='master.extraVolumes[2]={"name":"datasets","persistentVolumeClaim":{"claimName":"dsmlp-datasets"}}' \
     --set-json='master.extraVolumeMounts[0]={"name":"course-workspace","mountPath":"/home/${USER}"}' \
     --set master.extraVolumeMounts[0].mountPath=/home/$USER \
     --set master.extraVolumeMounts[0].subPath=home/$USER \
