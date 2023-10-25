@@ -1,5 +1,5 @@
 
-FROM docker.io/bitnami/spark:3.3.1-debian-11-r1
+FROM docker.io/bitnami/spark:3.4.1-debian-11-r83
 
 USER root
 
