@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # automatically export env variables
-set -A
+#set -A
+set -a
 
 # Use this file to override default Spark cluster configuration set by '/opt/start-cluster.sh'
 # e.g.
