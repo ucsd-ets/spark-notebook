@@ -5,9 +5,8 @@ c.ServerProxy.servers = {
     'port': 8080
     },
     'jobs-ui': {
-    'command': ['/opt/port-forward-jobs.sh'],
     'absolute_url': False,
-    'port': 8080
+    'port': 4040
     }
 }
 
