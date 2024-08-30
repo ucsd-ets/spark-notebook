@@ -37,8 +37,8 @@ ADD spark-cluster-configuration-profile.sh /etc/datahub-profile.d
 RUN chmod 777  /opt/*.sh /opt/*.ipynb
 
 ENV SPARK_CHART_NAME=spark
-ENV STOP_CLUSTER_SCRIPT_PATH=/opt/stop-cluster.sh
-ENV START_CLUSTER_SCRIPT_PATH=/opt/start-cluster.sh
+#ENV STOP_CLUSTER_SCRIPT_PATH=/opt/stop-cluster.sh
+#ENV START_CLUSTER_SCRIPT_PATH=/opt/start-cluster.sh
 
 ENV SHELL=/bin/bash
 
