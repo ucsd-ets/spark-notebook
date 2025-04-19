@@ -145,7 +145,7 @@ else
 
     # remove any user created with numeric uid
     sed -i "/^${NB_UID}:/d" /tmp/passwd.wrap
-    sed -i "/^${NB_UID}:/d" /etc/passwd
+    #sed -i "/^${NB_UID}:/d" /etc/passwd
 
     # Execute the command
     run-hooks /usr/local/bin/before-notebook.d
