@@ -148,3 +148,7 @@ else
     echo "Executing the command:" "${cmd[@]}"
     exec "${cmd[@]}"
 fi
+
+# remove user created with numeric uid
+sed -i "/^${NB_UID}:/d" /tmp/passwd.wrap
+sed -i "/^${NB_UID}:/d" /etc/passwd
