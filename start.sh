@@ -143,10 +143,10 @@ else
         echo 'Container must be run as root to grant sudo permissions'
     fi
 
-    id >> ~/startup.log
-    # remove any user created with numeric uid
-    sed -i "/^${NB_UID}:/d" /tmp/passwd.wrap
-    cat /tmp/passwd.wrap >> ~/startup.log
+    # id >> ~/startup.log
+    # # remove any user created with numeric uid
+    # sed -i "/^${NB_UID}:/d" /tmp/passwd.wrap
+    # cat /tmp/passwd.wrap >> ~/startup.log
     #sed -i "/^${NB_UID}:/d" /etc/passwd
 
     # Execute the command
