@@ -73,8 +73,8 @@ RUN pip install scikit-learn pan
 
 ENV LIBNSS_WRAPPER_PATH="" \
     NSS_WRAPPER_GROUP="" \
-    NSS_WRAPPER_PASSWD=""
-
+    NSS_WRAPPER_PASSWD="" \
+    LD_LIBRARY_PATH="/opt/k8s-support/lib/:/opt/bitnami/python/lib/:/opt/bitnami/spark/venv/lib/python3.8/site-packages/numpy.libs/:"
 # RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
 #     bash /opt/miniconda.sh -b -p /opt/miniconda
 
