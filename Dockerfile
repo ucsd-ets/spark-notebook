@@ -4,7 +4,7 @@ FROM docker.io/bitnami/spark:3.3.1-debian-11-r1
 USER root
 
 RUN apt-get update && \
-    apt-get install curl openssh-client vim unzip wget -y
+    apt-get install curl openssh-client vim unzip wget git -y
 
 # download and install kubectl
 ENV KUBECTL_VERSION=v1.25.0
@@ -71,7 +71,7 @@ RUN chmod -R 777 /opt/bitnami/spark/tmp /opt/bitnami/spark/conf
 
 RUN pip install scikit-learn pan matplotlib xgboost duckdb
 
-RUN  pip install folium
+RUN pip install folium
 
 ENV LIBNSS_WRAPPER_PATH="" \
     NSS_WRAPPER_GROUP="" \
