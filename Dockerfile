@@ -69,7 +69,7 @@ COPY bash.bashrc /etc/bash.bashrc
 
 RUN chmod -R 777 /opt/bitnami/spark/tmp /opt/bitnami/spark/conf
 
-RUN pip install scikit-learn pan
+RUN pip install scikit-learn pan matplotlib xgboost duckdb
 
 RUN  pip install folium
 
