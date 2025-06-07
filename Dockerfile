@@ -8,13 +8,13 @@ RUN apt-get update && \
 
 # download and install kubectl
 ENV KUBECTL_VERSION=v1.25.0
-WORKDIR /opt 
+WORKDIR /opt
 RUN curl -LO https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
     install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
     echo kubectl ${KUBECTL_VERSION} installed in /opt
 
 # download and install helm
-WORKDIR /opt 
+WORKDIR /opt
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
     chmod 700 get_helm.sh && \
     ./get_helm.sh && \
@@ -29,7 +29,7 @@ ADD port-forward.sh /opt/port-forward.sh
 ADD connect-to-jobs-ui.sh /opt/connect-to-jobs-ui.sh
 ADD sanity_check.ipynb /opt/sanity_check.ipynb
 
-# Spark cluster configuration can be modified via 
+# Spark cluster configuration can be modified via
 #    spark-cluster-configuration-profile.sh (see README.md for defaults)
 RUN mkdir /etc/datahub-profile.d
 ADD spark-cluster-configuration-profile.sh /etc/datahub-profile.d
@@ -80,15 +80,16 @@ RUN pip install scikit-learn
 # RUN conda install -c conda-forge cudatoolkit=11.2 cudnn -y && \
 #     pip install tensorflow==2.6
 
-# ARG TORCH_VER="1.7.1+cu101"        
-# ARG TORCH_VIS_VER="0.8.2+cu101"        
-# ARG TORCH_AUD_VER="0.7.2"        
-        
-# RUN pip install torch==${TORCH_VER} torchvision==${TORCH_VIS_VER} torchaudio==${TORCH_AUD_VER} \  
-#     -f https://download.pytorch.org/whl/torch_stable.html && \        
-#     fix-permissions $CONDA_DIR && \        
+# ARG TORCH_VER="1.7.1+cu101"
+# ARG TORCH_VIS_VER="0.8.2+cu101"
+# ARG TORCH_AUD_VER="0.7.2"
+
+# RUN pip install torch==${TORCH_VER} torchvision==${TORCH_VIS_VER} torchaudio==${TORCH_AUD_VER} \
+#     -f https://download.pytorch.org/whl/torch_stable.html && \
+#     fix-permissions $CONDA_DIR && \
 #     fix-permissions /home/$NB_USER
 
+RUN mkdir -p /datasets/courses/dsc102 && \
+    chmod 777 /datasets/courses/dsc102
+
 USER 1000
-
-
