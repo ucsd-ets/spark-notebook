@@ -45,6 +45,7 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set-json='worker.extraVolumeMounts[2]={"name":"home","mountPath":"/home/${USER}/private"}' \
     --set worker.extraVolumeMounts[2].mountPath=/home/$USER/private \
     --set-json='worker.extraVolumeMounts[3]={"name":"datasets","mountPath":"/datasets/courses/dsc102/public"}' \
+    --set-json='worker.extraVolumeMounts[4]={"name":"private-datasets","mountPath":"/datasets/courses/dsc102/private"}' \
     --set-json="master.extraVolumes[0]={\"name\":\"course-workspace\",\"nfs\":{\"server\":\"${FILESYSTEM}\",\"path\":\"${WORKSPACE}\"}}" \
     --set-json='master.extraVolumes[1]={"name":"home","persistentVolumeClaim":{"claimName":"home"}}' \
     --set-json="master.extraVolumes[2]={\"name\":\"datasets\",\"nfs\":{\"server\":\"its-dsmlp-fs04.ucsd.edu\",\"path\":\"/export/workspaces/DSC102_SP25_A00/public/dataset_public\"}}" \
