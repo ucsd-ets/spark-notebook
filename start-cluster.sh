@@ -62,3 +62,4 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set master.extraVolumeMounts[2].mountPath=/home/$USER/private
 
 ln -s /home/$USER/public/dataset_public /datasets/courses/dsc102/public
+ln -s /home/$USER/public/private/dataset_private /datasets/courses/dsc102/private
