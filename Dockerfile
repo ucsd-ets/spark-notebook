@@ -59,11 +59,9 @@ COPY start-singleuser.sh /usr/local/bin
 
 RUN chmod 777 /usr/local/bin/start-notebook.sh /usr/local/bin/start.sh /usr/local/bin/start-singleuser.sh
 
-RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
-    helm repo update && \
-    helm pull bitnami/spark --version=6.3.9 && \
-    tar -zxf spark*.tgz && \
-    chmod -R 777 /opt/spark
+# get bitnami charts from submodule
+COPY ./bitnami-charts/bitnami/spark /opt/spark
+RUN  chmod -R 777 /opt/spark
 
 COPY bash.bashrc /etc/bash.bashrc
 
