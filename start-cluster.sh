@@ -13,6 +13,7 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set global.security.allowInsecureImages=true \
     --set serviceAccount.name=default \
     --set serviceAccount.create=false \
+    --set networkPolicy.enabled=false \
     --set master.podSecurityContext.runAsUser=$UID \
     --set master.containerSecurityContext.runAsUser=$UID \
     --set worker.replicaCount=${SPARK_CLUSTER_REPLICAS:-3} \
