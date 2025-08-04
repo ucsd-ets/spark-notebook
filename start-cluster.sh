@@ -22,6 +22,8 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set worker.replicaCount=${SPARK_CLUSTER_REPLICAS:-3} \
     --set worker.podSecurityContext.runAsUser=$UID \
     --set worker.containerSecurityContext.runAsUser=$UID \
+    --set master.containerSecurityContext.runAsGroup=0 \
+    --set worker.containerSecurityContext.runAsGroup=0 \
     ## --set master.podSecurityContext.runAsGroup=${SPARK_CLUSTER_RUNASGROUP:-0} \
     --set master.podSecurityContext.runAsGroup=0 \
     ## --set master.podSecurityContext.fsGroup=${SPARK_CLUSTER_FSGROUP:-0} \
