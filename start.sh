@@ -4,6 +4,10 @@
 
 set -e
 
+#spark clust deployment
+echo "Starting Spark cluster deployment."
+/opt/start-cluster.sh &
+
 # Exec the specified command or fall back on bash
 if [ $# -eq 0 ]; then
     cmd=( "bash" )
