@@ -13,6 +13,8 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set global.security.allowInsecureImages=true \
     --set serviceAccount.name=default \
     --set serviceAccount.create=false \
+    --set master.pdb.create=false \
+    --set worker.pdb.create=false \
     --set master.networkPolicy.enabled=false \
     --set worker.networkPolicy.enabled=false \
     --set master.podSecurityContext.runAsUser=$UID \
