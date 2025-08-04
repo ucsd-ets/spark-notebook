@@ -4,10 +4,6 @@
 
 set -e
 
-# run cluster creation script
-echo "Starting to create cluster"
-/opt/start-cluster.sh &
-
 # set default ip to 0.0.0.0
 if [[ "${NOTEBOOK_ARGS} $*" != *"--ip="* ]]; then
     NOTEBOOK_ARGS="--ip=0.0.0.0 ${NOTEBOOK_ARGS}"
