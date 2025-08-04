@@ -59,7 +59,7 @@ COPY start-singleuser.sh /usr/local/bin
 
 RUN chmod 777 /usr/local/bin/start-notebook.sh /usr/local/bin/start.sh /usr/local/bin/start-singleuser.sh
 
-# get bitnami charts from submodule
+# get bitnami charts from submodule and install dependencies
 COPY ./bitnami-charts/spark /opt/spark
 RUN  helm dependency build /opt/spark
 RUN  chmod -R 777 /opt/spark
