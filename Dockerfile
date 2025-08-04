@@ -61,6 +61,7 @@ RUN chmod 777 /usr/local/bin/start-notebook.sh /usr/local/bin/start.sh /usr/loca
 
 # get bitnami charts from submodule
 COPY ./bitnami-charts/spark /opt/spark
+RUN  helm dependency build /opt/spark
 RUN  chmod -R 777 /opt/spark
 
 COPY bash.bashrc /etc/bash.bashrc
