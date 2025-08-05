@@ -92,4 +92,4 @@ RUN mkdir -p /datasets/courses/dsc102 && \
     chmod 777 /datasets/courses/dsc102
 
 USER 1000
-ENTRYPOINT ["/opt/start-cluster.sh"]
+ENTRYPOINT ["sleep", "infinity"]
