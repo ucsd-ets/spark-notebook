@@ -1,4 +1,5 @@
 #!/bin/bash
+export KUBECONFIG=~/.kube/config
 
 IFS=: read -r FILESYSTEM HOMEMOUNT <<< $(findmnt -n -o SOURCE --target /home/$USER)
 
@@ -8,7 +9,7 @@ WORKSPACE=$(dirname $WORKSPACE)
 helm install $SPARK_CHART_NAME /opt/spark \
     --set image.registry=${SPARK_CLUSTER_IMAGE_REGISTRY:-ghcr.io} \
     --set image.repository=${SPARK_CLUSTER_IMAGE_REPO:-ucsd-ets/spark-notebook} \
-    --set image.tag=${SPARK_CLUSTER_IMAGE_TAG:-feature-submodule-12} \
+    --set image.tag=${SPARK_CLUSTER_IMAGE_TAG:-feature-submodule-13} \
     --set image.pullPolicy=Always \
     --set global.security.allowInsecureImages=true \
     --set serviceAccount.name=default \
