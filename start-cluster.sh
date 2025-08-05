@@ -7,8 +7,8 @@ WORKSPACE=$(dirname $WORKSPACE)
 
 helm install $SPARK_CHART_NAME /opt/spark \
     --set image.registry=${SPARK_CLUSTER_IMAGE_REGISTRY:-ghcr.io} \
-    --set image.repository=${SPARK_CLUSTER_IMAGE_REPO:-ucsd-ets/spark-node} \
-    --set image.tag=${SPARK_CLUSTER_IMAGE_TAG:-fa22-3} \
+    --set image.repository=${SPARK_CLUSTER_IMAGE_REPO:-ucsd-ets/spark-notebook} \
+    --set image.tag=${SPARK_CLUSTER_IMAGE_TAG:-feature-submodule-11} \
     --set image.pullPolicy=Always \
     --set global.security.allowInsecureImages=true \
     --set serviceAccount.name=default \
