@@ -9,7 +9,7 @@ WORKSPACE=$(dirname $WORKSPACE)
 helm install $SPARK_CHART_NAME /opt/spark \
     --set image.registry=ghcr.io \
     --set image.repository=ucsd-ets/spark-notebook \
-    --set image.tag=feature-submodule-14 \
+    --set image.tag=feature-submodule-15 \
     --set image.pullPolicy=Always \
     --set global.security.allowInsecureImages=true \
     --set serviceAccount.name=default \
