@@ -2,7 +2,7 @@
 FROM docker.io/bitnami/spark:3.3.1-debian-11-r1
 
 USER root
-
+ 
 RUN apt-get update && \
     apt-get install curl openssh-client vim unzip wget -y
 
