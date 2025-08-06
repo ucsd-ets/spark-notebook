@@ -1,5 +1,4 @@
 #!/bin/bash
-export KUBECONFIG=~/.kube/config
 
 IFS=: read -r FILESYSTEM HOMEMOUNT <<< $(findmnt -n -o SOURCE --target /home/$USER)
 
