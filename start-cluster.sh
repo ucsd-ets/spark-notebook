@@ -6,6 +6,7 @@ WORKSPACE=$(dirname $HOMEMOUNT)
 WORKSPACE=$(dirname $WORKSPACE)
 
 helm install $SPARK_CHART_NAME /opt/spark \
+    --set persistence.enabled=false \
     --set image.registry=${SPARK_CLUSTER_IMAGE_REGISTRY:-ghcr.io} \
     --set image.repository=${SPARK_CLUSTER_IMAGE_REPO:-ucsd-ets/spark-node} \
     --set image.tag=${SPARK_CLUSTER_IMAGE_TAG:-feature-submodule-16} \
