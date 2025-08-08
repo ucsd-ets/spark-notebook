@@ -1,0 +1,4 @@
+[submodule "bitnami-charts"]
+	path = bitnami-charts
+	url = https://github.com/N2akiti/charts.git
+	branch = chart-v6.3.9-fixed
