@@ -1,3 +1,3 @@
-FROM docker.io/bitnami/spark:4.0.0-debian-12-r0
+FROM docker.io/bitnami/spark:3.3.1-debian-11-r1
 
 RUN pip install databricks==0.2 koalas==1.8.2
