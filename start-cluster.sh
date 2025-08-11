@@ -22,6 +22,12 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set worker.replicaCount=${SPARK_CLUSTER_REPLICAS:-3} \
     --set worker.podSecurityContext.runAsUser=$UID \
     --set worker.containerSecurityContext.runAsUser=$UID \
+    --set master.podSecurityContext.runAsGroup=${SPARK_CLUSTER_RUNASGROUP:-0} \
+    --set master.podSecurityContext.fsGroup=${SPARK_CLUSTER_FSGROUP:-0} \
+    --set worker.podSecurityContext.runAsGroup=${SPARK_CLUSTER_RUNASGROUP:-0} \
+    --set worker.podSecurityContext.fsGroup=${SPARK_CLUSTER_FSGROUP:-0} \
+    --set master.containerSecurityContext.readOnlyRootFilesystem=false \
+    --set worker.containerSecurityContext.readOnlyRootFilesystem=false \
     --set worker.resources.requests.memory=${SPARK_CLUSTER_WORKER_MEM:-20G} \
     --set worker.resources.limits.memory=${SPARK_CLUSTER_WORKER_MEM:-20G} \
     --set worker.coreLimit=${SPARK_CLUSTER_WORKER_CPU:-2} \
