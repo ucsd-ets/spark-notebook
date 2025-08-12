@@ -66,7 +66,9 @@ helm install $SPARK_CHART_NAME /opt/spark \
     --set-json='master.extraVolumeMounts[2]={"name":"home","mountPath":"/home/${USER}/private"}' \
     --set-json='master.extraVolumeMounts[3]={"name":"datasets","mountPath":"/datasets/courses/dsc102/public"}' \
     --set-json='master.extraVolumeMounts[4]={"name":"private-datasets","mountPath":"/datasets/courses/dsc102/private"}' \
-    --set master.extraVolumeMounts[2].mountPath=/home/$USER/private
+    --set master.extraVolumeMounts[2].mountPath=/home/$USER/private \
+    --set master.volumeMounts={} \ 
+    --set worker.volumeMounts={}
 
 ln -s /home/$USER/public/dataset_public /datasets/courses/dsc102/public
 ln -s /home/$USER/public/private/dataset_private /datasets/courses/dsc102/private
