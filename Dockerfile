@@ -1,4 +1,3 @@
-
 FROM docker.io/bitnami/spark:3.3.1-debian-11-r1
 
 USER root
@@ -59,17 +58,16 @@ COPY start-singleuser.sh /usr/local/bin
 
 RUN chmod 777 /usr/local/bin/start-notebook.sh /usr/local/bin/start.sh /usr/local/bin/start-singleuser.sh
 
-RUN helm repo add bitnami https://charts.bitnami.com/bitnami && \
-    helm repo update && \
-    helm pull bitnami/spark --version=6.3.9 && \
-    tar -zxf spark*.tgz && \
-    chmod -R 777 /opt/spark
+# get bitnami charts from submodule and install dependencies
+COPY ./bitnami-charts/bitnami/spark /opt/spark
+COPY ./bitnami-charts/bitnami/common /opt/spark/charts/common
+RUN  chmod -R 777 /opt/spark 
 
 COPY bash.bashrc /etc/bash.bashrc
 
 RUN chmod -R 777 /opt/bitnami/spark/tmp /opt/bitnami/spark/conf
 
-RUN pip install scikit-learn
+RUN pip install scikit-learn jupyterhub==5.3.0
 
 # RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
 #     bash /opt/miniconda.sh -b -p /opt/miniconda
