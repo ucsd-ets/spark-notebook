@@ -67,7 +67,7 @@ COPY bash.bashrc /etc/bash.bashrc
 
 RUN chmod -R 777 /opt/bitnami/spark/tmp /opt/bitnami/spark/conf
 
-RUN pip install scikit-learn
+RUN pip install scikit-learn jupyterhub==5.3.0
 
 # RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda.sh && \
 #     bash /opt/miniconda.sh -b -p /opt/miniconda
